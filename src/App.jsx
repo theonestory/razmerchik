@@ -52,6 +52,7 @@ const RulerPicker = ({ value, onChange, range }) => {
   useEffect(() => {
     if (!emblaApi) return;
     const idx = values.indexOf(value);
+    // При первом рендере прыгаем без анимации (true), чтобы не дергалось
     if (idx !== -1) emblaApi.scrollTo(idx, true);
     emblaApi.on('select', onSelect);
     return () => emblaApi.off('select', onSelect);
@@ -62,7 +63,12 @@ const RulerPicker = ({ value, onChange, range }) => {
       <div ref={emblaRef}>
         <div className="flex touch-pan-y items-center h-16">
           {values.map((v, i) => (
-            <div key={i} className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" onClick={() => emblaApi?.scrollTo(i)}>
+            <div 
+              key={i} 
+              className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" 
+              // scrollTo(i, false) включает плавную анимацию при клике
+              onClick={() => emblaApi?.scrollTo(i, false)}
+            >
               <span className={`transition-all duration-300 tracking-tighter ${v === value ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
                 {v}
               </span>
@@ -70,7 +76,7 @@ const RulerPicker = ({ value, onChange, range }) => {
           ))}
         </div>
       </div>
-      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 text-[#D2D238] text-[24px] leading-none select-none">
+      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 text-[#D2D238] text-[24px] leading-none select-none pointer-events-none">
         •
       </div>
     </div>
@@ -106,7 +112,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative selection:bg-transparent overflow-x-hidden pt-0">
       
-      {/* HEADER: Уменьшен pt-8 до pt-4 и pb-10 до pb-8 для компактности сверху */}
       <div className="bg-[#D2D238] pb-8 px-5 relative shrink-0 pt-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-white/20 rounded-full overflow-hidden border-2 border-black/5 flex-shrink-0">
