@@ -32,13 +32,14 @@ const findNearestSize = (sizes, key, target) => {
 
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
-  const isFirstRender = useRef(true);
   
+  // Добавили dragFree: true для свободного скролла
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     align: 'center', 
     containScroll: false,
-    duration: 35 
+    duration: 35,
+    dragFree: true // Позволяет крутить карусель как барабан
   });
 
   const onSelect = useCallback(() => {
@@ -51,17 +52,21 @@ const RulerPicker = ({ value, onChange, range }) => {
     }
   }, [emblaApi, values, onChange, value]);
 
-  // Устанавливаем начальную позицию ТОЛЬКО один раз или при смене категории
   useEffect(() => {
     if (emblaApi) {
       const idx = values.indexOf(value);
       if (idx !== -1) {
-        emblaApi.scrollTo(idx, true); // Мгновенно только в самом начале
+        emblaApi.scrollTo(idx, true);
       }
       emblaApi.on('select', onSelect);
-      return () => emblaApi.off('select', onSelect);
+      // 'settle' срабатывает, когда свободная прокрутка остановилась
+      emblaApi.on('settle', onSelect); 
+      return () => {
+        emblaApi.off('select', onSelect);
+        emblaApi.off('settle', onSelect);
+      };
     }
-  }, [emblaApi, range]); // Следим за emblaApi и range, а не за value
+  }, [emblaApi, range]);
 
   return (
     <div className="relative mask-edges w-full py-2 overflow-hidden">
@@ -116,7 +121,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative selection:bg-transparent overflow-x-hidden pt-0">
       
-      {/* HEADER: Увеличен pb-8 до pb-11 для добавления воздуха ПОД блоком аватара */}
       <div className="bg-[#D2D238] pb-11 px-5 relative shrink-0 pt-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-white/20 rounded-full overflow-hidden border-2 border-black/5 flex-shrink-0">
@@ -142,7 +146,6 @@ export default function App() {
           <p className="text-center text-[13px] font-black text-black/30 mb-1 uppercase tracking-widest leading-none">
             {currentCategory.parameter_name}
           </p>
-          {/* Key={} заставляет React пересоздавать компонент при смене категории, что чинит сброс позиции */}
           <RulerPicker 
             key={activeTab}
             value={sizes[activeTab]} 
