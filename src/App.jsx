@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
 const sizeDatabase = {
@@ -32,49 +32,24 @@ const findNearestSize = (sizes, key, target) => {
 
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
-  
-  // Храним положение каждого слайда для расчета дистанции
-  const [slidesInView, setSlidesInView] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     align: 'center', 
     containScroll: false,
     duration: 25,
-    skipSnaps: true, // Позволяет пролетать много цифр за один свайп
-    dragFree: false  // Возвращаем жесткий SNAP к центру
+    skipSnaps: true
   });
 
-  // Функция расчета масштаба для каждого слайда
-  const updateSlidesInView = useCallback(() => {
+  const updateIndex = useCallback(() => {
     if (!emblaApi) return;
-    const centerPoint = emblaApi.scrollProgress();
+    const index = emblaApi.selectedScrollSnap();
+    setSelectedIndex(index);
     
-    // Получаем прогресс каждого слайда относительно центра
-    const progressArray = emblaApi.scrollSnapList().map((scrollSnap, index) => {
-        const diff = scrollSnap - centerPoint;
-        // Расстояние от центра (от 0 до 1)
-        const distance = Math.abs(diff);
-        
-        // Математика масштаба: чем меньше distance, тем больше scale
-        // Базовый размер - 24px, максимальный - 42px. Разница - 18px.
-        // Будем использовать коэффициент затухания, чтобы цифра быстро уменьшалась при уходе из центра
-        const scaleFactor = Math.max(0, 1 - Math.pow(distance * 3, 1.5)); // Коэффициент масштаба от 1 до 0
-        const currentSize = 24 + (18 * scaleFactor); // Итоговый размер от 24 до 42
-        
-        return { index, scaleFactor, size: currentSize };
-    });
-    
-    setSlidesInView(progressArray);
-  }, [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    const centerIndex = emblaApi.selectedScrollSnap();
-    const newValue = values[centerIndex];
+    const newValue = values[index];
     if (newValue !== undefined && newValue !== value) {
       onChange(newValue);
-      // Оставляем вибрацию, она добавляет ощущения "механики"
       window.Telegram?.WebApp?.HapticFeedback?.selectionChanged();
     }
   }, [emblaApi, values, onChange, value]);
@@ -82,32 +57,27 @@ const RulerPicker = ({ value, onChange, range }) => {
   useEffect(() => {
     if (emblaApi) {
       const idx = values.indexOf(value);
-      if (idx !== -1) emblaApi.scrollTo(idx, true);
+      if (idx !== -1) {
+        emblaApi.scrollTo(idx, true);
+        setSelectedIndex(idx);
+      }
       
-      // Обновляем масштаб при каждом движении карусели
-      emblaApi.on('scroll', updateSlidesInView);
-      emblaApi.on('select', onSelect);
-      updateSlidesInView(); // Начальный расчет
+      emblaApi.on('select', updateIndex);
+      emblaApi.on('scroll', updateIndex); // Обновляем размер прямо во время движения
       
       return () => {
-        emblaApi.off('scroll', updateSlidesInView);
-        emblaApi.off('select', onSelect);
+        emblaApi.off('select', updateIndex);
+        emblaApi.off('scroll', updateIndex);
       };
     }
-  }, [emblaApi, range, updateSlidesInView, onSelect]);
+  }, [emblaApi, range, updateIndex]);
 
   return (
     <div className="relative mask-edges w-full py-2 overflow-hidden">
       <div ref={emblaRef}>
         <div className="flex touch-pan-y items-center h-16">
           {values.map((v, i) => {
-            // Берем рассчитанный размер для этого слайда
-            const slideData = slidesInView.find(s => s.index === i);
-            const currentSize = slideData ? slideData.size : 24; // Если нет данных, то базовый размер
-            const scaleFactor = slideData ? slideData.scaleFactor : 0;
-            
-            // Плавно меняем цвет от серого к черному
-            const isBlack = scaleFactor > 0.8;
+            const isSelected = i === selectedIndex;
             
             return (
               <div 
@@ -115,10 +85,8 @@ const RulerPicker = ({ value, onChange, range }) => {
                 className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" 
                 onClick={() => emblaApi?.scrollTo(i, false)}
               >
-                {/* В инлайновом стиле плавно меняем fontSize */}
                 <span 
-                  className={`transition-colors duration-200 tracking-tighter select-none font-black ${isBlack ? 'text-black' : 'text-gray-400'}`}
-                  style={{ fontSize: `${currentSize}px` }}
+                  className={`transition-all duration-200 tracking-tighter select-none font-black ${isSelected ? 'text-[42px] text-black' : 'text-[24px] text-gray-400'}`}
                 >
                   {v}
                 </span>
