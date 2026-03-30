@@ -33,17 +33,15 @@ const findNearestSize = (sizes, key, target) => {
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
   
-  // Убрали dragFree, добавили watchDrag и настроили плавность так, чтобы работал SNAP
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     align: 'center', 
     containScroll: false,
-    duration: 35, // Скорость докрутки
-    skipSnaps: false, // Запрещаем пропуск точек фиксации
-    dragFree: false // Возвращаем магнитное центрирование
+    duration: 30,
+    dragFree: true // Разрешаем свободный полет
   });
 
-  const onSelect = useCallback(() => {
+  const syncValue = useCallback(() => {
     if (!emblaApi) return;
     const centerIndex = emblaApi.selectedScrollSnap();
     const newValue = values[centerIndex];
@@ -53,14 +51,26 @@ const RulerPicker = ({ value, onChange, range }) => {
     }
   }, [emblaApi, values, onChange, value]);
 
+  // Магическая докрутка после свободного скролла
+  const snapToCenter = useCallback(() => {
+    if (!emblaApi) return;
+    const centerIndex = emblaApi.selectedScrollSnap();
+    emblaApi.scrollTo(centerIndex, false); // Плавно дотягиваем до центра
+    syncValue();
+  }, [emblaApi, syncValue]);
+
   useEffect(() => {
     if (emblaApi) {
       const idx = values.indexOf(value);
-      if (idx !== -1) {
-        emblaApi.scrollTo(idx, true);
-      }
-      emblaApi.on('select', onSelect);
-      return () => emblaApi.off('select', onSelect);
+      if (idx !== -1) emblaApi.scrollTo(idx, true);
+      
+      emblaApi.on('select', syncValue); // Обновляем данные при пролете цифр
+      emblaApi.on('settle', snapToCenter); // Центрируем при полной остановке
+      
+      return () => {
+        emblaApi.off('select', syncValue);
+        emblaApi.off('settle', snapToCenter);
+      };
     }
   }, [emblaApi, range]);
 
