@@ -33,13 +33,14 @@ const findNearestSize = (sizes, key, target) => {
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
   
-  // Добавили dragFree: true для свободного скролла
+  // Убрали dragFree, добавили watchDrag и настроили плавность так, чтобы работал SNAP
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     align: 'center', 
     containScroll: false,
-    duration: 35,
-    dragFree: true // Позволяет крутить карусель как барабан
+    duration: 35, // Скорость докрутки
+    skipSnaps: false, // Запрещаем пропуск точек фиксации
+    dragFree: false // Возвращаем магнитное центрирование
   });
 
   const onSelect = useCallback(() => {
@@ -59,12 +60,7 @@ const RulerPicker = ({ value, onChange, range }) => {
         emblaApi.scrollTo(idx, true);
       }
       emblaApi.on('select', onSelect);
-      // 'settle' срабатывает, когда свободная прокрутка остановилась
-      emblaApi.on('settle', onSelect); 
-      return () => {
-        emblaApi.off('select', onSelect);
-        emblaApi.off('settle', onSelect);
-      };
+      return () => emblaApi.off('select', onSelect);
     }
   }, [emblaApi, range]);
 
@@ -78,7 +74,7 @@ const RulerPicker = ({ value, onChange, range }) => {
               className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" 
               onClick={() => emblaApi?.scrollTo(i, false)}
             >
-              <span className={`transition-all duration-300 tracking-tighter ${v === value ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
+              <span className={`transition-all duration-300 tracking-tighter select-none ${v === value ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
                 {v}
               </span>
             </div>
