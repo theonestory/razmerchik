@@ -32,8 +32,6 @@ const findNearestSize = (sizes, key, target) => {
 
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
-  
-  // Добавляем внутренний стейт для мгновенного визуального обновления
   const [activeIndex, setActiveIndex] = useState(() => values.indexOf(value));
   
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -46,7 +44,7 @@ const RulerPicker = ({ value, onChange, range }) => {
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     const centerIndex = emblaApi.selectedScrollSnap();
-    setActiveIndex(centerIndex); // Обновляем визуальное состояние
+    setActiveIndex(centerIndex);
     
     const newValue = values[centerIndex];
     if (newValue !== undefined && newValue !== value) {
@@ -84,7 +82,8 @@ const RulerPicker = ({ value, onChange, range }) => {
           ))}
         </div>
       </div>
-      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 text-[#D2D238] text-[24px] leading-none select-none pointer-events-none">
+      {/* Точка теперь на -bottom-0 (была -bottom-2) */}
+      <div className="absolute left-1/2 -translate-x-1/2 -bottom-0 text-[#D2D238] text-[24px] leading-none select-none pointer-events-none">
         •
       </div>
     </div>
