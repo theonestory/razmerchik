@@ -62,7 +62,6 @@ const RulerPicker = ({ value, onChange, range }) => {
       <div ref={emblaRef}>
         <div className="flex touch-pan-y items-center h-16">
           {values.map((v, i) => (
-            // Возвращена кликабельность: onClick={() => emblaApi?.scrollTo(i)}
             <div key={i} className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" onClick={() => emblaApi?.scrollTo(i)}>
               <span className={`transition-all duration-300 tracking-tighter ${v === value ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
                 {v}
@@ -71,9 +70,7 @@ const RulerPicker = ({ value, onChange, range }) => {
           ))}
         </div>
       </div>
-      
-      {/* Маркер: Желтая жирная точка вместо молнии */}
-      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 text-[#D2D238] text-[24px] leading-none">
+      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 text-[#D2D238] text-[24px] leading-none select-none">
         •
       </div>
     </div>
@@ -107,11 +104,10 @@ export default function App() {
   const currentCategory = sizeDatabase.categories[activeTab];
 
   return (
-    // Убрали pt-6, вернули pt-2 для всего экрана
-    <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative selection:bg-transparent overflow-x-hidden pt-2">
+    <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative selection:bg-transparent overflow-x-hidden pt-0">
       
-      {/* HEADER: Вернули pb-10, pt-8 для простора */}
-      <div className="bg-[#D2D238] pb-10 px-5 relative shrink-0 pt-8">
+      {/* HEADER: Уменьшен pt-8 до pt-4 и pb-10 до pb-8 для компактности сверху */}
+      <div className="bg-[#D2D238] pb-8 px-5 relative shrink-0 pt-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-white/20 rounded-full overflow-hidden border-2 border-black/5 flex-shrink-0">
             <img 
@@ -130,10 +126,8 @@ export default function App() {
         </div>
       </div>
 
-      {/* MAIN CONTENT: Вернули pt-8 */}
       <div className="bg-[#F2F2F7] -mt-6 rounded-t-[32px] relative z-10 flex-1 pt-8 px-4 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         
-        {/* ЛИНЕЙКА */}
         <div className="mb-6">
           <p className="text-center text-[13px] font-black text-black/30 mb-1 uppercase tracking-widest leading-none">
             {currentCategory.parameter_name}
@@ -145,7 +139,6 @@ export default function App() {
           />
         </div>
 
-        {/* БРЕНДЫ */}
         <div className="space-y-3">
           {currentCategory.brands.map((brand, idx) => {
             const size = findNearestSize(brand.sizes, currentCategory.param_key, sizes[activeTab]);
