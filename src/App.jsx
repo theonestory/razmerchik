@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
 const sizeDatabase = {
@@ -32,6 +32,7 @@ const findNearestSize = (sizes, key, target) => {
 
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
+  const isFirstRender = useRef(true);
   
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
@@ -43,20 +44,24 @@ const RulerPicker = ({ value, onChange, range }) => {
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     const centerIndex = emblaApi.selectedScrollSnap();
-    if (values[centerIndex] !== undefined) {
-      onChange(values[centerIndex]);
+    const newValue = values[centerIndex];
+    if (newValue !== undefined && newValue !== value) {
+      onChange(newValue);
       window.Telegram?.WebApp?.HapticFeedback?.selectionChanged();
     }
-  }, [emblaApi, values, onChange]);
+  }, [emblaApi, values, onChange, value]);
 
+  // Устанавливаем начальную позицию ТОЛЬКО один раз или при смене категории
   useEffect(() => {
-    if (!emblaApi) return;
-    const idx = values.indexOf(value);
-    // При первом рендере прыгаем без анимации (true), чтобы не дергалось
-    if (idx !== -1) emblaApi.scrollTo(idx, true);
-    emblaApi.on('select', onSelect);
-    return () => emblaApi.off('select', onSelect);
-  }, [emblaApi, values, value, onSelect]);
+    if (emblaApi) {
+      const idx = values.indexOf(value);
+      if (idx !== -1) {
+        emblaApi.scrollTo(idx, true); // Мгновенно только в самом начале
+      }
+      emblaApi.on('select', onSelect);
+      return () => emblaApi.off('select', onSelect);
+    }
+  }, [emblaApi, range]); // Следим за emblaApi и range, а не за value
 
   return (
     <div className="relative mask-edges w-full py-2 overflow-hidden">
@@ -66,7 +71,6 @@ const RulerPicker = ({ value, onChange, range }) => {
             <div 
               key={i} 
               className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" 
-              // scrollTo(i, false) включает плавную анимацию при клике
               onClick={() => emblaApi?.scrollTo(i, false)}
             >
               <span className={`transition-all duration-300 tracking-tighter ${v === value ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
@@ -112,7 +116,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative selection:bg-transparent overflow-x-hidden pt-0">
       
-      <div className="bg-[#D2D238] pb-8 px-5 relative shrink-0 pt-4">
+      {/* HEADER: Увеличен pb-8 до pb-11 для добавления воздуха ПОД блоком аватара */}
+      <div className="bg-[#D2D238] pb-11 px-5 relative shrink-0 pt-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-white/20 rounded-full overflow-hidden border-2 border-black/5 flex-shrink-0">
             <img 
@@ -137,7 +142,9 @@ export default function App() {
           <p className="text-center text-[13px] font-black text-black/30 mb-1 uppercase tracking-widest leading-none">
             {currentCategory.parameter_name}
           </p>
+          {/* Key={} заставляет React пересоздавать компонент при смене категории, что чинит сброс позиции */}
           <RulerPicker 
+            key={activeTab}
             value={sizes[activeTab]} 
             onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))}
             range={currentCategory.range}
