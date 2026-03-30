@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #F2F2F7;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Эффект плавного растворения по краям (для линейки) */
+.mask-edges {
+  mask-image: linear-gradient(to right, transparent, black 25%, black 75%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 25%, black 75%, transparent);
+}
+
+/* Скрываем системный скроллбар, если он вдруг появится */
+::-webkit-scrollbar {
+  display: none;
+}
