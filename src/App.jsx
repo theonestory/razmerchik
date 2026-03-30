@@ -33,6 +33,9 @@ const findNearestSize = (sizes, key, target) => {
 const RulerPicker = ({ value, onChange, range }) => {
   const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
   
+  // Добавляем внутренний стейт для мгновенного визуального обновления
+  const [activeIndex, setActiveIndex] = useState(() => values.indexOf(value));
+  
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     axis: 'x', 
     align: 'center', 
@@ -43,6 +46,8 @@ const RulerPicker = ({ value, onChange, range }) => {
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     const centerIndex = emblaApi.selectedScrollSnap();
+    setActiveIndex(centerIndex); // Обновляем визуальное состояние
+    
     const newValue = values[centerIndex];
     if (newValue !== undefined && newValue !== value) {
       onChange(newValue);
@@ -53,7 +58,10 @@ const RulerPicker = ({ value, onChange, range }) => {
   useEffect(() => {
     if (emblaApi) {
       const idx = values.indexOf(value);
-      if (idx !== -1) emblaApi.scrollTo(idx, true);
+      if (idx !== -1) {
+        emblaApi.scrollTo(idx, true);
+        setActiveIndex(idx);
+      }
       emblaApi.on('select', onSelect);
       return () => emblaApi.off('select', onSelect);
     }
@@ -67,10 +75,9 @@ const RulerPicker = ({ value, onChange, range }) => {
             <div 
               key={i} 
               className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" 
-              // scrollTo(i, false) — FALSE значит "не мгновенно", т.е. с анимацией скролла
               onClick={() => emblaApi?.scrollTo(i, false)}
             >
-              <span className={`transition-all duration-300 tracking-tighter select-none ${v === value ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
+              <span className={`transition-all duration-300 tracking-tighter select-none ${i === activeIndex ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
                 {v}
               </span>
             </div>
