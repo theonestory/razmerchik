@@ -52,63 +52,62 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   );
 };
 
-// --- КОМПОНЕНТ ЭКРАНА ИНФО ---
+// --- ЭКРАН ИНФО (ВЫЕЗД СНИЗУ) ---
 const InfoScreen = ({ onClose }) => (
   <motion.div 
-    initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: "spring", damping: 25, stiffness: 200 }}
+    initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} 
+    transition={{ type: "spring", damping: 30, stiffness: 300 }}
     className="absolute inset-0 bg-[#F2F2F7] z-[100] flex flex-col"
   >
-    <div className="p-5 flex items-center bg-[#D2D238] shadow-sm shrink-0">
-      <button onClick={onClose} className="p-2 -ml-2 mr-2 active:scale-90 transition-transform">
+    <div className="p-5 flex items-center bg-white border-b border-black/5 shadow-sm shrink-0">
+      <button onClick={onClose} className="flex items-center gap-2 active:opacity-50 transition-opacity">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
+        <span className="text-[14px] font-bold text-black uppercase tracking-tight">закрыть</span>
       </button>
-      <h2 className="text-xl font-black uppercase italic tracking-tight">Информация</h2>
+      <h2 className="flex-1 text-center text-xl font-black uppercase italic tracking-tight pr-[85px]">Инфо</h2>
     </div>
     
     <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 scrollbar-hide">
       <section>
         <h3 className="text-[#D2D238] bg-black inline-block px-2 py-1 text-sm font-black uppercase mb-3">Что это за приложение?</h3>
-        <p className="text-black/70 leading-relaxed font-medium">
-          «Размерчик» — это твой карманный помощник для онлайн-шоппинга. Мы собрали замеры популярных мировых брендов в одном месте. Больше не нужно гадать, какой размер подойдет: просто выбери свои параметры, а мы покажем, что это за размер в сетке конкретного бренда.
+        <p className="text-black/70 leading-relaxed font-bold">
+          «Размерчик» — это твой карманный помощник для онлайн-шоппинга. Мы собрали замеры популярных мировых брендов в одном месте. Больше не нужно гадать: выбери свои параметры, а мы покажем размер в сетке бренда.
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👕 Как измерить полуобхват груди</h3>
-        <p className="text-black/70 leading-relaxed font-medium">
-          Возьми свою любимую футболку или худи, которые сидят на тебе идеально. Положи их на ровную поверхность и измерь расстояние от одной подмышки до другой. Это и есть твой «полуобхват груди».
+        <p className="text-black/70 leading-relaxed font-bold">
+          Возьми вещь, которая сидит идеально. Положи на ровную поверхность и измерь расстояние от одной подмышки до другой. Это и есть твой «полуобхват груди».
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👖 Как измерить полуобхват талии</h3>
-        <p className="text-black/70 leading-relaxed font-medium">
-          Замерь пояс своих самых удобных брюк или джинсов от края до края. Важно: штаны при этом должны лежать ровно, без складок. Это значение поможет тебе выбрать идеальный низ.
+        <p className="text-black/70 leading-relaxed font-bold">
+          Замерь пояс своих самых удобных джинсов от края до края. Важно: штаны должны лежать ровно. Это значение поможет выбрать идеальный низ.
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👟 Как измерить стопу (стельку)</h3>
-        <p className="text-black/70 leading-relaxed font-medium">
-          Поставь ногу на лист бумаги и обведи её. Измерь расстояние от самой дальней точки пятки до кончика большого пальца. Это твоя длина стопы в сантиметрах. Именно этот параметр — самый точный для выбора кроссовок.
+        <p className="text-black/70 leading-relaxed font-bold">
+          Поставь ногу на лист бумаги и обведи её. Измерь расстояние от пятки до кончика большого пальца. Это твоя длина стопы в сантиметрах.
         </p>
       </section>
 
       <section className="bg-black/5 p-4 rounded-2xl border-l-4 border-black">
-        <h3 className="text-black text-sm font-black uppercase mb-2">⚠️ Важное примечание</h3>
-        <p className="text-black/60 text-sm leading-relaxed italic mb-4">
-          Помни, что китайские подделки и реплики часто «маломерят» на 1-2 размера относительно оригинальных сеток. 
+        <h3 className="text-black text-sm font-black uppercase mb-2">⚠️ Важное</h3>
+        <p className="text-black/60 text-sm leading-relaxed font-bold italic mb-4">
+          Помни, что китайские подделки часто «маломерят» на 1-2 размера относительно оригинальных сеток. 
         </p>
-        <p className="text-black/60 text-sm leading-relaxed italic">
-          Также учитывай, что разные линейки одного бренда (например, Oversize, Slim Fit или Vintage) могут иметь свои допуски. В приложении указаны базовые значения, максимально близкие к стандартам бренда.
+        <p className="text-black/60 text-sm leading-relaxed font-bold italic">
+          Разные линейки брендов могут иметь свои допуски. В приложении указаны базовые значения, максимально близкие к реальности.
         </p>
       </section>
-      
-      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest">
-        Размерчик v1.2
-      </div>
     </div>
   </motion.div>
 );
@@ -173,26 +172,17 @@ export default function App() {
   };
 
   const currentCategory = sizeDatabase[activeTab];
-  
   const cardVariants = {
     enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
     center: { x: 0, opacity: 1 },
     exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
   };
-
   const fadeVariants = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -8 } };
 
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
-      
-      {/* МОДАЛКА ИНФО */}
-      <AnimatePresence>
-        {showInfo && <InfoScreen onClose={() => setShowInfo(false)} />}
-      </AnimatePresence>
-
+      <AnimatePresence>{showInfo && <InfoScreen onClose={() => setShowInfo(false)} />}</AnimatePresence>
       <div className="flex-1 flex flex-col pt-4">
-        
-        {/* НАВИГАЦИЯ С КНОПКОЙ ИНФО */}
         <div className="px-5 mb-5 flex gap-2 shrink-0 z-50">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
@@ -202,81 +192,52 @@ export default function App() {
               </button>
             ))}
           </div>
-          
-          <button 
-            onClick={() => { setShowInfo(true); window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium'); }}
-            className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center border border-black/5 active:scale-95 transition-all"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
+          <button onClick={() => { setShowInfo(true); window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium'); }} className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center border border-black/5 active:scale-95 transition-all">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
           </button>
         </div>
-
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden">
-          {/* Твой остальной UI остается без изменений... */}
           <div className={`absolute top-0 left-0 right-0 z-30 pt-8 px-4 pb-6 h-[155px] pointer-events-none`}>
-            <motion.div 
-                animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className={`${isScrolled ? 'pointer-events-none' : 'pointer-events-auto'}`}
-            >
+            <motion.div animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }} transition={{ duration: 0.4 }} className={`${isScrolled ? 'pointer-events-none' : 'pointer-events-auto'}`}>
                 <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
                 <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
             </motion.div>
           </div>
-
           <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
-                key={activeTab} custom={direction} variants={cardVariants} initial="enter" animate="center" exit="exit"
-                transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.2 } }}
-                onScroll={handleScroll}
-                className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3 pointer-events-auto"
+                key={activeTab} custom={direction} variants={cardVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.2 } }}
+                onScroll={handleScroll} className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3 pointer-events-auto"
               >
                 {currentCategory.brands.map((brand, idx) => {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
                     <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative">
                       <div className="w-14 h-14 mr-4 shrink-0 overflow-hidden flex items-center justify-center">
-                        <img src={brand.logo} className="w-full h-full object-contain" alt={brand.name} onError={(e) => { e.target.style.opacity = '0'; }} />
+                        <img src={brand.logo} className="w-full h-full object-contain" alt={brand.name} onError={(e) => { e.target.style.opacity = '0.1'; }} />
                       </div>
                       <div className="flex-1 flex pr-2 mt-[3px]">
                         <div className="flex-1 flex flex-col items-center">
                           <AnimatePresence mode="popLayout">
-                            <motion.div key={activeTab === 'shoes' ? size.eu : size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
-                              {activeTab === 'shoes' ? size.eu : size.int}
-                            </motion.div>
+                            <motion.div key={activeTab === 'shoes' ? size.eu : size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.eu : size.int}</motion.div>
                           </AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Eu' : 'Int'}</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center">
                           <AnimatePresence mode="popLayout">
-                            <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
-                              {size.us}
-                            </motion.div>
+                            <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{size.us}</motion.div>
                           </AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center">
                           <AnimatePresence mode="popLayout">
-                            <motion.div key={activeTab === 'shoes' ? size.uk : size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
-                              {activeTab === 'shoes' ? size.uk : size.eu}
-                            </motion.div>
+                            <motion.div key={activeTab === 'shoes' ? size.uk : size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.uk : size.eu}</motion.div>
                           </AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Uk' : 'Eu'}</div>
                         </div>
                       </div>
-                      <button 
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleShare(brand.name, size); }} 
-                        className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-[9999]"
-                        style={{ touchAction: 'manipulation', cursor: 'pointer' }}
-                      >
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
-                        </svg>
+                      <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleShare(brand.name, size); }} className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-[9999]">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
                       </button>
                     </div>
                   );

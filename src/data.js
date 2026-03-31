@@ -22,7 +22,7 @@ export const shoeDataISO = {
 };
 
 // ==========================================
-// ЛОГОТИПЫ БРЕНДОВ
+// ЛОГОТИПЫ БРЕНДОВ (ПУТИ ЧЕРЕЗ ПАПКУ LOGOS)
 // ==========================================
 const LOGO_COLUMBIA = "logos/columbia.svg";
 const LOGO_HM = "logos/h-m.svg";
@@ -37,7 +37,7 @@ const LOGO_CONVERSE = "logos/converse.svg";
 const LOGO_CROCS = "logos/crocs.svg";
 const LOGO_HH = "logos/helly-hansen.svg";
 const LOGO_HOLLISTER = "logos/hollister.svg";
-const LOGO_CARHARTT = "logos/carhartt.svg";
+const LOGO_CARHARTT = "logos/carhartt.svg"; 
 const LOGO_UNIQLO = "logos/uniqlo.svg";
 const LOGO_F21 = "logos/forever-21.svg";
 const LOGO_UGG = "logos/ugg.svg";
