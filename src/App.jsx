@@ -91,9 +91,10 @@ export default function App() {
     window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
   };
 
+  // ИДЕАЛЬНЫЙ СКРОЛЛ: Чувствительность настроена так, чтобы не было "дребезга"
   const handleScroll = (e) => {
     const scrollTop = e.target.scrollTop;
-    if (scrollTop > 40 && !isScrolled) {
+    if (scrollTop > 30 && !isScrolled) {
       setIsScrolled(true);
     } else if (scrollTop <= 10 && isScrolled) {
       setIsScrolled(false);
@@ -118,7 +119,8 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        <div className="px-5 mb-5 flex gap-2 shrink-0">
+        {/* НАВИГАЦИЯ */}
+        <div className="px-5 mb-5 flex gap-2 shrink-0 z-30">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div 
               className="absolute top-1 bottom-1 bg-black rounded-full"
@@ -140,33 +142,31 @@ export default function App() {
           </button>
         </div>
 
-        {/* ИЗМЕНЕНИЕ ЗДЕСЬ: убрали класс pt-8 и добавили анимацию paddingTop */}
-        <motion.div 
-          initial={false} 
-          animate={{ paddingTop: isScrolled ? 16 : 32 }} 
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
-          className="flex-1 bg-[#F2F2F7] rounded-t-[32px] px-4 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col"
-        >
+        {/* ГЛАВНАЯ СЕРАЯ ОБЛАСТЬ (Теперь это контейнер для слоев) */}
+        <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
           
+          {/* СЛОЙ 1: ПЛАВАЮЩАЯ ШАПКА (Нативный Apple-style fade) */}
           <motion.div 
             initial={false}
             animate={{ 
-              height: isScrolled ? 0 : 'auto', 
               opacity: isScrolled ? 0 : 1,
               scale: isScrolled ? 0.9 : 1,
-              marginBottom: isScrolled ? 0 : 18
+              y: isScrolled ? -20 : 0,
+              pointerEvents: isScrolled ? 'none' : 'auto'
             }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{ originY: 0, originX: 0.5 }} 
-            className="relative z-10 shrink-0 overflow-hidden w-full"
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Очень мягкая кривая iOS
+            style={{ transformOrigin: 'top center' }}
+            // Добавлен градиент, чтобы карточки красиво исчезали под шапкой
+            className="absolute top-0 left-0 right-0 z-20 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent"
           >
-            <p className="text-center text-[13px] font-black text-black/30 mb-0 uppercase tracking-widest leading-none">
+            <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">
               {currentCategory.title}
             </p>
             <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
           </motion.div>
 
-          <div className="relative flex-1 overflow-hidden">
+          {/* СЛОЙ 2: СКРОЛЛ КАРТОЧЕК (Независимый, без прыжков) */}
+          <div className="absolute inset-0 z-10">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
                 key={activeTab} 
@@ -177,7 +177,8 @@ export default function App() {
                 exit="exit" 
                 transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} 
                 onScroll={handleScroll}
-                className="space-y-3 overflow-y-auto pb-10 scrollbar-hide absolute inset-0"
+                // pt-[155px] делает так, что карточки всегда начинают рендериться четко ПОД рулеткой
+                className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3"
               >
                 {currentCategory.brands.map((brand, idx) => {
                   if (activeTab === 'shoes') {
@@ -273,7 +274,7 @@ export default function App() {
               </motion.div>
             </AnimatePresence>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
