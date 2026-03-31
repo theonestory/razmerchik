@@ -93,8 +93,11 @@ export default function App() {
     else if (scrollTop <= 10 && isScrolled) setIsScrolled(false);
   };
 
-  // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ШЕРИНГА (ЧЕРЕЗ openTelegramLink) ---
-  const handleShare = (brandName, sizeData) => {
+  // --- СТАНДАРТНЫЙ МЕТОД TELEGRAM WEB APP ---
+  const handleShare = (e, brandName, sizeData) => {
+    e.preventDefault();
+    e.stopPropagation(); // Важно: останавливаем всплытие клика
+
     const currentValue = sizes[activeTab];
     let mText = ""; let emoji = ""; let sText = "";
 
@@ -111,13 +114,10 @@ export default function App() {
 
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sizeText}\n\nhttps://t.me/i_know_my_size_bot`;
     
-    const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
-    
+    // switchInlineQuery — стандартный способ TMA вызвать окно шаринга
     if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.openTelegramLink(shareUrl);
+        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
         window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
-    } else {
-        window.open(shareUrl, '_blank');
     }
   };
 
@@ -136,7 +136,7 @@ export default function App() {
               </button>
             ))}
           </div>
-          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер в популярных брендах!')}>
+          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер!')}>
             <div className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -188,12 +188,12 @@ export default function App() {
                         </div>
                       </div>
                       
-                      {/* ОБНОВЛЕННАЯ КНОПКА SHARE: opacity-40 и новый метод тапа */}
+                      {/* ИКОНКА SHARE: Opacity 40%, тап работает через системный метод */}
                       <button 
-                        onClick={() => handleShare(brand.name, size)} 
-                        className="p-3 text-[#838383] opacity-40 active:opacity-20 transition-opacity shrink-0"
+                        onClick={(e) => handleShare(e, brand.name, size)} 
+                        className="p-3 text-[#838383] opacity-40 active:opacity-20 transition-opacity shrink-0 cursor-pointer"
                       >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
                             <polyline points="16 6 12 2 8 6" />
                             <line x1="12" y1="2" x2="12" y2="15" />
