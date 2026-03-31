@@ -35,7 +35,7 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   }, [emblaApi, value, steps]);
 
   return (
-    <div className="relative w-full overflow-hidden mask-edges pt-1 pb-[10px]">
+    <div className="relative w-full overflow-hidden mask-edges pt-1 pb-[10px] pointer-events-auto">
       <div ref={emblaRef}>
         <div className="flex items-center h-16">
           {steps.map((v, i) => (
@@ -93,11 +93,11 @@ export default function App() {
     else if (scrollTop <= 10) setIsScrolled(false);
   };
 
-  // ВЧЕРАШНИЙ РАБОЧИЙ ШАРИНГ
+  // МЕТОД, КОТОРЫЙ РАБОТАЛ ВЧЕРА (Без Inline Mode)
   const handleShare = (e, brandName, sizeData) => {
     if (e) {
-        e.preventDefault();
-        e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
     }
 
     const currentValue = sizes[activeTab];
@@ -116,9 +116,13 @@ export default function App() {
 
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sizeText}\n\nhttps://t.me/i_know_my_size_bot`;
     
+    const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
+    
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
-        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
+        window.Telegram.WebApp.openTelegramLink(shareUrl);
+    } else {
+        window.open(shareUrl, '_blank');
     }
   };
 
@@ -129,7 +133,7 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* НАВИГАЦИЯ (z-50) */}
+        {/* НАВИГАЦИЯ */}
         <div className="px-5 mb-5 flex gap-2 shrink-0 z-50">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
@@ -139,43 +143,34 @@ export default function App() {
               </button>
             ))}
           </div>
-          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер!')}>
-            <div className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-            </div>
-          </button>
         </div>
 
-        <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden">
           
-          {/* РУЛЕТКА (z-30) - Исчезает физически для кликов при скролле */}
-          <motion.div 
-            animate={{ 
-                opacity: isScrolled ? 0 : 1, 
-                scale: isScrolled ? 0.9 : 1, 
-                y: isScrolled ? -20 : 0 
-            }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
-            className={`absolute top-0 left-0 right-0 z-30 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent ${isScrolled ? 'pointer-events-none' : 'pointer-events-auto'}`}
-          >
-            <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
-            <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
-          </motion.div>
+          {/* СЛОЙ НИЖНИЙ: РУЛЕТКА (z-10) */}
+          <div className="absolute top-0 left-0 right-0 z-10 pt-8 px-4 pb-6">
+            <motion.div 
+                animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+                <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
+                <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
+            </motion.div>
+          </div>
 
-          {/* КАРТОЧКИ (z-10) */}
-          <div className="absolute inset-0 z-10">
+          {/* СЛОЙ ВЕРХНИЙ: КАРТОЧКИ (z-20) */}
+          {/* pointer-events-none на контейнере позволяет кликать "сквозь" него в рулетку */}
+          <div className="absolute inset-0 z-20 pointer-events-none">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
                 key={activeTab} 
                 onScroll={handleScroll}
-                className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3"
+                className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3 pointer-events-auto"
               >
                 {currentCategory.brands.map((brand, idx) => {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
-                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
+                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative pointer-events-auto">
                       <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden p-2">
                         <img src={brand.logo} className="w-full h-full object-contain" alt="logo" />
                       </div>
@@ -206,9 +201,10 @@ export default function App() {
                         </div>
                       </div>
                       
+                      {/* КНОПКА SHARE: onPointerDown для мгновенного пробития клика */}
                       <button 
-                        onClick={(e) => handleShare(e, brand.name, size)} 
-                        className="p-3 -mr-1 text-[#838383] opacity-40 active:opacity-100 transition-opacity shrink-0 cursor-pointer"
+                        onPointerDown={(e) => handleShare(e, brand.name, size)} 
+                        className="p-3 -mr-1 text-[#838383] opacity-40 active:opacity-100 transition-opacity shrink-0 cursor-pointer relative z-[1000]"
                       >
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
