@@ -37,7 +37,7 @@ const LOGO_CONVERSE = "logos/converse.svg";
 const LOGO_CROCS = "logos/crocs.svg";
 const LOGO_HH = "logos/helly-hansen.svg";
 const LOGO_HOLLISTER = "logos/hollister.svg";
-const LOGO_CARHARTT = "logos/carhartt.svg"; // Перепроверь, чтобы файл назывался именно так
+const LOGO_CARHARTT = "logos/carhartt.svg";
 const LOGO_UNIQLO = "logos/uniqlo.svg";
 const LOGO_F21 = "logos/forever-21.svg";
 const LOGO_UGG = "logos/ugg.svg";
@@ -61,14 +61,11 @@ const LOGO_DKNY = "logos/dkny.svg";
 const LOGO_DRMARTENS = "logos/dr-martens.svg";
 const LOGO_ECCO = "logos/ecco.svg";
 
-// --- ТАБЛИЦЫ РАЗМЕРОВ (УПРОЩЕННЫЕ ДЛЯ ВЕРСТКИ) ---
+// --- ТАБЛИЦЫ РАЗМЕРОВ ---
 const colTopsM = [{ half_chest: 42.5, int: "XS", us: "34", eu: "44" }, { half_chest: 46.5, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 const colBotM = [{ half_waist: 35.0, int: "XS", us: "28", eu: "38" }, { half_waist: 38.5, int: "S", us: "32", eu: "42" }, { half_waist: 42.5, int: "M", us: "34", eu: "44" }, { half_waist: 47.5, int: "L", us: "36", eu: "46" }, { half_waist: 52.5, int: "XL", us: "40", eu: "50" }, { half_waist: 57.5, int: "2XL", us: "44", eu: "54" }, { half_waist: 62.5, int: "3XL", us: "48", eu: "58" }];
-
-// NB: Убрали диапазоны (было 32-34 -> стало 33), чтобы не ломать карточку
 const nbTopsM = [{ half_chest: 45.0, int: "S", us: "37", eu: "46" }, { half_chest: 49.0, int: "M", us: "40", eu: "48" }, { half_chest: 54.0, int: "L", us: "43", eu: "52" }, { half_chest: 59.0, int: "XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "49", eu: "60" }, { half_chest: 70.0, int: "3XL", us: "52", eu: "64" }];
 const nbBotM = [{ half_waist: 37.0, int: "S", us: "30", eu: "45" }, { half_waist: 41.0, int: "M", us: "33", eu: "49" }, { half_waist: 46.0, int: "L", us: "36", eu: "53" }, { half_waist: 51.0, int: "XL", us: "40", eu: "57" }, { half_waist: 56.0, int: "2XL", us: "44", eu: "61" }];
-
 const nikTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 59.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 
 // ==========================================
@@ -88,7 +85,6 @@ export const sizeDatabase = {
       { name: "The North Face", logo: LOGO_TNF, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Fila", logo: LOGO_FILA, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Converse", logo: LOGO_CONVERSE, sizes: { male: nikTopsM, female: nikTopsM } },
-      { name: "Crocs", logo: LOGO_CROCS, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Helly Hansen", logo: LOGO_HH, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Hollister", logo: LOGO_HOLLISTER, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Carhartt", logo: LOGO_CARHARTT, sizes: { male: nikTopsM, female: nikTopsM } },
@@ -160,18 +156,17 @@ export const sizeDatabase = {
   shoes: {
     title: "Длина стопы (см)", range: { min: 22, max: 32, step: 0.5 },
     brands: [
-      { name: "Columbia", logo: LOGO_COLUMBIA }, { name: "H&M", logo: LOGO_HM }, { name: "Levi's", logo: LOGO_LEVIS },
+      { name: "Columbia", logo: LOGO_COLUMBIA }, { name: "Levi's", logo: LOGO_LEVIS },
       { name: "Nike", logo: LOGO_NIKE }, { name: "New Balance", logo: LOGO_NB },
       { name: "Adidas", logo: LOGO_ADIDAS }, { name: "Puma", logo: LOGO_PUMA },
-      { name: "The North Face", logo: LOGO_TNF }, { name: "Fila", logo: LOGO_FILA }, { name: "Converse", logo: LOGO_CONVERSE },
-      { name: "Crocs", logo: LOGO_CROCS }, { name: "Helly Hansen", logo: LOGO_HH }, { name: "Hollister", logo: LOGO_HOLLISTER },
-      { name: "Carhartt", logo: LOGO_CARHARTT }, { name: "Uniqlo", logo: LOGO_UNIQLO }, { name: "Forever 21", logo: LOGO_F21 },
-      { name: "UGG", logo: LOGO_UGG }, { name: "Zara", logo: LOGO_ZARA }, { name: "Mango", logo: LOGO_MANGO },
-      { name: "Ralph Lauren", logo: LOGO_RL }, { name: "Timberland", logo: LOGO_TIMBERLAND }, { name: "Tommy Hilfiger", logo: LOGO_TH },
-      { name: "Calvin Klein", logo: LOGO_CK }, { name: "Lacoste", logo: LOGO_LACOSTE }, { name: "GAP", logo: LOGO_GAP },
-      { name: "Gucci", logo: LOGO_GUCCI }, { name: "Prada", logo: LOGO_PRADA }, { name: "Guess", logo: LOGO_GUESS },
-      { name: "Michael Kors", logo: LOGO_MK }, { name: "Burberry", logo: LOGO_BURBERRY }, { name: "Under Armour", logo: LOGO_UA },
-      { name: "Hugo Boss", logo: LOGO_BOSS }, { name: "DKNY", logo: LOGO_DKNY }, { name: "Dr. Martens", logo: LOGO_DRMARTENS },
+      { name: "Fila", logo: LOGO_FILA }, { name: "Converse", logo: LOGO_CONVERSE },
+      { name: "Crocs", logo: LOGO_CROCS }, { name: "Helly Hansen", logo: LOGO_HH },
+      { name: "Carhartt", logo: LOGO_CARHARTT }, { name: "UGG", logo: LOGO_UGG }, 
+      { name: "Timberland", logo: LOGO_TIMBERLAND }, { name: "Tommy Hilfiger", logo: LOGO_TH },
+      { name: "Lacoste", logo: LOGO_LACOSTE }, { name: "Gucci", logo: LOGO_GUCCI }, 
+      { name: "Prada", logo: LOGO_PRADA }, { name: "Michael Kors", logo: LOGO_MK }, 
+      { name: "Burberry", logo: LOGO_BURBERRY }, { name: "Under Armour", logo: LOGO_UA },
+      { name: "Hugo Boss", logo: LOGO_BOSS }, { name: "Dr. Martens", logo: LOGO_DRMARTENS },
       { name: "ECCO", logo: LOGO_ECCO }
     ]
   }
