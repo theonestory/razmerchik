@@ -93,12 +93,11 @@ export default function App() {
     else if (scrollTop <= 10 && isScrolled) setIsScrolled(false);
   };
 
-  // --- ФУНКЦИЯ ШЕРИНГА ---
+  // --- ВЧЕРАШНИЙ РАБОЧИЙ ШАРИНГ ---
   const handleShare = (e, brandName, sizeData) => {
-    // Предотвращаем срабатывание скролла при тапе
     if (e) {
       e.preventDefault();
-      e.stopPropagation();
+      e.stopPropagation(); // Полная остановка всех систем, чтобы сработал только клик
     }
 
     const currentValue = sizes[activeTab];
@@ -119,7 +118,8 @@ export default function App() {
     
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
-        window.Telegram.WebApp.switchInlineQuery(message);
+        // Возвращаем вчерашнюю версию параметров
+        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
     }
   };
 
@@ -161,7 +161,8 @@ export default function App() {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
                     <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative overflow-hidden">
-                      <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
+                      {/* ЛОГОТИПЫ: временно вернул bg-[#CFCFC9] и p-2, чтобы текущие лого не были корявыми */}
+                      <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden p-2">
                         <img src={brand.logo} className="w-full h-full object-contain" alt="logo" />
                       </div>
                       <div className="flex-1 flex pr-2 mt-[3px]">
@@ -191,10 +192,9 @@ export default function App() {
                         </div>
                       </div>
                       
-                      {/* КНОПКА SHARE: 40% прозрачность, увеличенная область тапа */}
                       <button 
                         onClick={(e) => handleShare(e, brand.name, size)} 
-                        className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-50 pointer-events-auto"
+                        className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-50"
                       >
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
