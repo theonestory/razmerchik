@@ -52,15 +52,13 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   );
 };
 
-// --- ОБНОВЛЕННЫЙ ЭКРАН ИНФО (ВЫЕЗД СНИЗУ) ---
 const InfoScreen = ({ onClose }) => (
   <motion.div 
     initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} 
-    transition={{ type: "spring", damping: 30, stiffness: 300 }}
+    transition={{ type: "spring", damping: 32, stiffness: 320 }}
     className="absolute inset-0 bg-[#F2F2F7] z-[100] flex flex-col overflow-hidden"
   >
-    {/* Чисто белая шапка с крестиком и текстом "закрыть" */}
-    <div className="p-5 flex items-center bg-white border-b border-black/5 shadow-sm shrink-0 relative z-[110]">
+    <div className="p-5 flex items-center bg-white border-b border-black/5 shadow-sm shrink-0">
       <button onClick={onClose} className="flex items-center gap-2 active:opacity-50 transition-opacity">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -71,48 +69,46 @@ const InfoScreen = ({ onClose }) => (
       <h2 className="flex-1 text-center text-[19px] font-black uppercase italic tracking-tighter pr-[85px] text-black/80">Инфо</h2>
     </div>
     
-    <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 scrollbar-hide pb-20 relative z-[100]">
+    <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 scrollbar-hide pb-20">
       <section>
         <h3 className="text-black bg-white border-2 border-black inline-block px-2 py-1 text-sm font-black uppercase mb-3 italic">О приложении</h3>
         <p className="text-black/70 leading-relaxed font-bold">
-          «Размерчик» — карманный помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов. При выборе личных параметров отобразится подходящий размер в сетке конкретного бренда.
+          «Размерчик» — карманный помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов. При выборе личных параметров отобразится подходящий размер в сетке бренда.
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👕 Как измерить полуобхват груди</h3>
         <p className="text-black/70 leading-relaxed font-bold">
-          Возьми вещь, которая сидит идеально. Положи на ровную поверхность и измерь расстояние от одной подмышки до другой. Это и есть твой «полуобхват груди».
+          Необходимо взять вещь, которая сидит идеально, положить её на ровную поверхность и измерь расстояние от одной подмышки до другой. Это и есть «полуобхват груди».
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👖 Как измерить полуобхват талии</h3>
         <p className="text-black/70 leading-relaxed font-bold">
-          Замерь пояс самых удобных джинсов или брюк от края до края. Важно: штаны при этом должны лежать ровно. Это значение поможет выбрать идеальный низ.
+          Замеряется пояс удобных джинсов или брюк от края до края. Вещь должна лежать ровно, без натяжения. Это значение поможет выбрать идеальный низ.
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👟 Как измерить стопу (стельку)</h3>
         <p className="text-black/70 leading-relaxed font-bold">
-          Поставь ногу на лист бумаги и обведи её. Измерь расстояние от пятки до кончика большого пальца. Это твоя длина стопы в сантиметрах.
+          Нужно поставить ногу на лист бумаги и обвести её. Расстояние от пятки до кончика большого пальца — это длина стопы в сантиметрах.
         </p>
       </section>
 
       <section className="bg-black/5 p-4 rounded-2xl border-l-4 border-black">
-        <h3 className="text-black text-sm font-black uppercase mb-2 tracking-tight">⚠️ Важное</h3>
+        <h3 className="text-black text-sm font-black uppercase mb-2">⚠️ Важное</h3>
         <p className="text-black/60 text-sm leading-relaxed font-bold italic mb-4">
-          Помни, что китайские подделки и реплики часто «маломерят» на 1-2 размера относительно оригинальных сеток. 
+          Китайские подделки и реплики часто «маломерят» на 1-2 размера относительно оригинальных сеток. 
         </p>
         <p className="text-black/60 text-sm leading-relaxed font-bold italic">
-          Также учитывай, что разные линейки брендов могут иметь свои допуски. В приложении указаны базовые значения, максимально близкие к стандартам бренда.
+          Разные линейки брендов могут иметь свои допуски. В приложении указаны базовые значения, максимально близкие к реальности.
         </p>
       </section>
       
-      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest">
-        Размерчик v1.2
-      </div>
+      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest">Размерчик v1.2</div>
     </div>
   </motion.div>
 );
@@ -130,17 +126,11 @@ export default function App() {
     return saved ? JSON.parse(saved) : { tops: 45, bottoms: 35, shoes: 28.0 };
   });
 
-  useEffect(() => {
-    localStorage.setItem('size_app_values', JSON.stringify(sizes));
-  }, [sizes]);
+  useEffect(() => { localStorage.setItem('size_app_values', JSON.stringify(sizes)); }, [sizes]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      tg.setHeaderColor('#D2D238');
-    }
+    if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#D2D238'); }
   }, []);
 
   const handleTabChange = (newTab) => {
@@ -164,31 +154,20 @@ export default function App() {
     let mText = activeTab === 'tops' ? `полуобхвата груди (${currentValue} см)` : activeTab === 'bottoms' ? `полуобхвата талии (${currentValue} см)` : `стельки (${currentValue} см)`;
     let emoji = activeTab === 'tops' ? "👕" : activeTab === 'bottoms' ? "👖" : "👟";
     let sText = activeTab === 'shoes' ? `EU: ${sizeData.eu}, US: ${sizeData.us}, UK: ${sizeData.uk}` : `Международный: ${sizeData.int}, US: ${sizeData.us}, EU: ${sizeData.eu}`;
-
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sText}\n\nhttps://t.me/i_know_my_size_bot`;
     const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
-    
-    if (window.Telegram?.WebApp) {
-      window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
-      window.Telegram.WebApp.openTelegramLink(shareUrl);
-    } else {
-      window.open(shareUrl, '_blank');
-    }
+    if (window.Telegram?.WebApp) { window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success'); window.Telegram.WebApp.openTelegramLink(shareUrl); } else { window.open(shareUrl, '_blank'); }
   };
 
   const currentCategory = sizeDatabase[activeTab];
-  const cardVariants = {
-    enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
-  };
+  const cardVariants = { enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }), center: { x: 0, opacity: 1 }, exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 }) };
   const fadeVariants = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -8 } };
 
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <AnimatePresence>{showInfo && <InfoScreen onClose={() => setShowInfo(false)} />}</AnimatePresence>
-      <div className="flex-1 flex flex-col pt-4 relative z-0">
-        <div className="px-5 mb-5 flex gap-2 shrink-0 z-50 pointer-events-auto">
+      <div className="flex-1 flex flex-col pt-4">
+        <div className="px-5 mb-5 flex gap-2 shrink-0 z-50">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
             {tabs.map((tab) => (
@@ -201,7 +180,7 @@ export default function App() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
           </button>
         </div>
-        <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden z-10">
+        <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden">
           <div className={`absolute top-0 left-0 right-0 z-30 pt-8 px-4 pb-6 h-[155px] pointer-events-none`}>
             <motion.div animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }} transition={{ duration: 0.4 }} className={`${isScrolled ? 'pointer-events-none' : 'pointer-events-auto'}`}>
                 <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
@@ -212,7 +191,7 @@ export default function App() {
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
                 key={activeTab} custom={direction} variants={cardVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.2 } }}
-                onScroll={handleScroll} className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3 pointer-events-auto z-10"
+                onScroll={handleScroll} className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3 pointer-events-auto"
               >
                 {currentCategory.brands.map((brand, idx) => {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
