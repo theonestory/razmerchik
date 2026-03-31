@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
 import { sizeDatabase, findNearestShoe, findNearestClothes } from './data';
 
 const RulerPicker = ({ value, onChange, min, max, step }) => {
@@ -11,9 +10,7 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
     return s;
   }, [min, max, step]);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    axis: 'x', align: 'center', containScroll: false, duration: 35 
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: 'x', align: 'center', containScroll: false, duration: 35 });
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -35,7 +32,7 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
     if (!emblaApi) return;
     const startIdx = steps.indexOf(value);
     if (startIdx !== -1) emblaApi.scrollTo(startIdx, true);
-  }, [emblaApi]);
+  }, [emblaApi, value, steps]);
 
   return (
     <div className="relative w-full overflow-hidden mask-edges pt-1 pb-[10px]">
@@ -59,7 +56,6 @@ export default function App() {
   const tabs = ['tops', 'bottoms', 'shoes'];
   const [activeTab, setActiveTab] = useState('tops'); 
   const [[currentIndex, direction], setDirection] = useState([0, 0]); 
-  
   const [gender] = useState('male');
   const [isScrolled, setIsScrolled] = useState(false);
   
@@ -93,32 +89,36 @@ export default function App() {
 
   const handleScroll = (e) => {
     const scrollTop = e.target.scrollTop;
-    if (scrollTop > 30 && !isScrolled) {
-      setIsScrolled(true);
-    } else if (scrollTop <= 10 && isScrolled) {
-      setIsScrolled(false);
+    if (scrollTop > 30 && !isScrolled) setIsScrolled(true);
+    else if (scrollTop <= 10 && isScrolled) setIsScrolled(false);
+  };
+
+  const handleShare = (brandName, sizeData) => {
+    const currentValue = sizes[activeTab];
+    let mText = ""; let emoji = ""; let sText = "";
+
+    if (activeTab === 'tops') {
+      mText = `полуобхвата груди (${currentValue} см)`; emoji = "👕";
+      sText = `Международный: ${sizeData.int}, US: ${sizeData.us}, EU: ${sizeData.eu}`;
+    } else if (activeTab === 'bottoms') {
+      mText = `полуобхвата талии (${currentValue} см)`; emoji = "👖";
+      sText = `Международный: ${sizeData.int}, US: ${sizeData.us}, EU: ${sizeData.eu}`;
+    } else {
+      mText = `стельки (${currentValue} см)`; emoji = "👟";
+      sText = `EU: ${sizeData.eu}, US: ${sizeData.us}, UK: ${sizeData.uk}`;
     }
+
+    const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sText}\n\nhttps://t.me/i_know_my_size_bot`;
+    window.Telegram?.WebApp?.switchInlineQuery(message, ['users', 'groups', 'channels']);
+    window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
   };
 
   const currentCategory = sizeDatabase[activeTab];
-
-  const cardVariants = {
-    enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
-  };
-
-  const fadeVariants = {
-    initial: { opacity: 0, y: 8 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -8 }
-  };
 
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* НАВИГАЦИЯ */}
         <div className="px-5 mb-5 flex gap-2 shrink-0 z-30">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div 
@@ -132,141 +132,58 @@ export default function App() {
               </button>
             ))}
           </div>
-          <button onClick={() => window.Telegram?.WebApp?.showAlert('Здесь будет инфо о замерах!')} className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
+          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер в популярных брендах!')} className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
             </svg>
           </button>
         </div>
 
-        {/* ГЛАВНАЯ СЕРАЯ ОБЛАСТЬ */}
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-          
-          {/* СЛОЙ 1: ПЛАВАЮЩАЯ ШАПКА */}
           <motion.div 
-            initial={false}
-            animate={{ 
-              opacity: isScrolled ? 0 : 1,
-              scale: isScrolled ? 0.9 : 1,
-              y: isScrolled ? -20 : 0,
-              pointerEvents: isScrolled ? 'none' : 'auto'
-            }}
+            animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0, pointerEvents: isScrolled ? 'none' : 'auto' }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
-            style={{ transformOrigin: 'top center' }}
             className="absolute top-0 left-0 right-0 z-20 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent"
           >
-            <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">
-              {currentCategory.title}
-            </p>
+            <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
             <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
           </motion.div>
 
-          {/* СЛОЙ 2: СКРОЛЛ КАРТОЧЕК */}
           <div className="absolute inset-0 z-10">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
                 key={activeTab} 
-                custom={direction} 
-                variants={cardVariants} 
-                initial="enter" 
-                animate="center" 
-                exit="exit" 
-                transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} 
                 onScroll={handleScroll}
                 className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3"
               >
                 {currentCategory.brands.map((brand, idx) => {
-                  if (activeTab === 'shoes') {
-                    const size = findNearestShoe(gender, sizes.shoes);
-                    return (
-                      <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
-                        <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
-                          <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
+                  const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
+                  return (
+                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
+                      <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
+                        <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
+                      </div>
+                      <div className="flex-1 flex pr-2 mt-[3px]">
+                        <div className="flex-1 flex flex-col items-center">
+                          <div className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.eu : size.int}</div>
+                          <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Eu' : 'Int'}</div>
                         </div>
-                        {/* ОПТИЧЕСКОЕ ВЫРАВНИВАНИЕ: добавлен mt-[3px] */}
-                        <div className="flex-1 flex pr-2 mt-[3px]">
-                          <div className="flex-1 flex flex-col items-center">
-                            <div className="relative h-[24px] w-full flex justify-center items-center">
-                              <AnimatePresence mode="popLayout">
-                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
-                                  {size.eu}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Eu</div>
-                          </div>
-
-                          <div className="flex-1 flex flex-col items-center">
-                            <div className="relative h-[24px] w-full flex justify-center items-center">
-                              <AnimatePresence mode="popLayout">
-                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
-                                  {size.us}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Us</div>
-                          </div>
-
-                          <div className="flex-1 flex flex-col items-center">
-                            <div className="relative h-[24px] w-full flex justify-center items-center">
-                              <AnimatePresence mode="popLayout">
-                                <motion.div key={size.uk} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
-                                  {size.uk}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Uk</div>
-                          </div>
+                        <div className="flex-1 flex flex-col items-center">
+                          <div className="text-[24px] font-black text-[#838383] leading-none">{size.us}</div>
+                          <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
+                        </div>
+                        <div className="flex-1 flex flex-col items-center">
+                          <div className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.uk : size.eu}</div>
+                          <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Uk' : 'Eu'}</div>
                         </div>
                       </div>
-                    );
-                  } else {
-                    const size = findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
-                    return (
-                      <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
-                        <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
-                          <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
-                        </div>
-                        {/* ОПТИЧЕСКОЕ ВЫРАВНИВАНИЕ: добавлен mt-[3px] */}
-                        <div className="flex-1 flex pr-2 mt-[3px]">
-                          <div className="flex-1 flex flex-col items-center">
-                            <div className="relative h-[24px] w-full flex justify-center items-center">
-                              <AnimatePresence mode="popLayout">
-                                <motion.div key={size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
-                                  {size.int}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Int</div>
-                          </div>
-
-                          <div className="flex-1 flex flex-col items-center">
-                            <div className="relative h-[24px] w-full flex justify-center items-center">
-                              <AnimatePresence mode="popLayout">
-                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
-                                  {size.us}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Us</div>
-                          </div>
-
-                          <div className="flex-1 flex flex-col items-center">
-                            <div className="relative h-[24px] w-full flex justify-center items-center">
-                              <AnimatePresence mode="popLayout">
-                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
-                                  {size.eu}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Eu</div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
+                      <button onClick={() => handleShare(brand.name, size)} className="w-10 h-10 rounded-full bg-[#F2F2F7] flex items-center justify-center active:scale-90 transition-transform shrink-0">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#838383" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  );
                 })}
               </motion.div>
             </AnimatePresence>
