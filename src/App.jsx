@@ -93,6 +93,7 @@ export default function App() {
     else if (scrollTop <= 10 && isScrolled) setIsScrolled(false);
   };
 
+  // --- ИСПРАВЛЕННАЯ ФУНКЦИЯ ШЕРИНГА (ЧЕРЕЗ openTelegramLink) ---
   const handleShare = (brandName, sizeData) => {
     const currentValue = sizes[activeTab];
     let mText = ""; let emoji = ""; let sText = "";
@@ -110,14 +111,13 @@ export default function App() {
 
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sizeText}\n\nhttps://t.me/i_know_my_size_bot`;
     
-    // Вызов системного окна Telegram для выбора чата
+    const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
+    
     if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
+        window.Telegram.WebApp.openTelegramLink(shareUrl);
         window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
     } else {
-        // Запасной вариант для дебага в обычном браузере
-        console.log("Sharing message:", message);
-        alert("Функция работает только внутри Telegram!");
+        window.open(shareUrl, '_blank');
     }
   };
 
@@ -127,44 +127,33 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
-        
         <div className="px-5 mb-5 flex gap-2 shrink-0 z-30">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
-            <motion.div 
-              className="absolute top-1 bottom-1 bg-black rounded-full"
-              animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }}
-              transition={{ type: "spring", stiffness: 400, damping: 35 }}
-            />
+            <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
             {tabs.map((tab) => (
               <button key={tab} onClick={() => handleTabChange(tab)} className={`flex-1 z-10 text-[14px] font-black transition-colors duration-300 ${activeTab === tab ? 'text-[#D2D238]' : 'text-black/40'}`}>
                 {tab === 'tops' ? 'Грудь' : tab === 'bottoms' ? 'Талия' : 'Стопа'}
               </button>
             ))}
           </div>
-          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер в популярных брендах!')} className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
+          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер в популярных брендах!')}>
+            <div className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </div>
           </button>
         </div>
 
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-          <motion.div 
-            animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0, pointerEvents: isScrolled ? 'none' : 'auto' }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
-            className="absolute top-0 left-0 right-0 z-20 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent"
-          >
+          <motion.div animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0, pointerEvents: isScrolled ? 'none' : 'auto' }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} className="absolute top-0 left-0 right-0 z-20 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent">
             <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
             <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
           </motion.div>
 
           <div className="absolute inset-0 z-10">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
-              <motion.div 
-                key={activeTab} 
-                onScroll={handleScroll}
-                className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3"
-              >
+              <motion.div key={activeTab} onScroll={handleScroll} className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3">
                 {currentCategory.brands.map((brand, idx) => {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
@@ -199,10 +188,10 @@ export default function App() {
                         </div>
                       </div>
                       
-                      {/* ОБНОВЛЕННАЯ КНОПКА SHARE */}
+                      {/* ОБНОВЛЕННАЯ КНОПКА SHARE: opacity-40 и новый метод тапа */}
                       <button 
                         onClick={() => handleShare(brand.name, size)} 
-                        className="p-3 text-[#838383]/60 active:opacity-40 transition-opacity shrink-0"
+                        className="p-3 text-[#838383] opacity-40 active:opacity-20 transition-opacity shrink-0"
                       >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
