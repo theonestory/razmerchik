@@ -22,44 +22,44 @@ export const shoeDataISO = {
 };
 
 // ==========================================
-// ЛОГОТИПЫ БРЕНДОВ
+// ЛОГОТИПЫ БРЕНДОВ (ФИНАЛЬНЫЙ СПИСОК)
 // ==========================================
-const LOGO_COLUMBIA = "https://cdn.worldvectorlogo.com/logos/columbia-sportswear.svg";
-const LOGO_HM = "https://cdn.worldvectorlogo.com/logos/h-m.svg";
-const LOGO_LEVIS = "https://cdn.worldvectorlogo.com/logos/levi-s-logo.svg";
-const LOGO_NIKE = "https://cdn.worldvectorlogo.com/logos/nike-11.svg";
-const LOGO_ADIDAS = "https://cdn.worldvectorlogo.com/logos/adidas-4.svg";
-const LOGO_PUMA = "https://cdn.worldvectorlogo.com/logos/puma-logo.svg";
-const LOGO_NB = "https://cdn.worldvectorlogo.com/logos/new-balance-2.svg";
-const LOGO_TNF = "https://cdn.worldvectorlogo.com/logos/the-north-face.svg";
-const LOGO_FILA = "https://cdn.worldvectorlogo.com/logos/fila-9.svg";
-const LOGO_CONVERSE = "https://cdn.worldvectorlogo.com/logos/converse-1.svg";
-const LOGO_CROCS = "https://cdn.worldvectorlogo.com/logos/crocs.svg";
-const LOGO_HH = "https://cdn.worldvectorlogo.com/logos/helly-hansen.svg";
-const LOGO_HOLLISTER = "https://cdn.worldvectorlogo.com/logos/hollister.svg";
-const LOGO_CARHARTT = "https://cdn.worldvectorlogo.com/logos/carhartt.svg";
-const LOGO_UNIQLO = "https://cdn.worldvectorlogo.com/logos/uniqlo-2.svg";
-const LOGO_F21 = "https://cdn.worldvectorlogo.com/logos/forever-21.svg";
-const LOGO_UGG = "https://cdn.worldvectorlogo.com/logos/ugg-australia.svg";
-const LOGO_ZARA = "https://cdn.worldvectorlogo.com/logos/zara.svg";
-const LOGO_MANGO = "https://cdn.worldvectorlogo.com/logos/mango-2.svg";
-const LOGO_RL = "https://cdn.worldvectorlogo.com/logos/ralph-lauren.svg";
-const LOGO_TIMBERLAND = "https://cdn.worldvectorlogo.com/logos/timberland-2.svg";
-const LOGO_TH = "https://cdn.worldvectorlogo.com/logos/tommy-hilfiger.svg";
-const LOGO_CK = "https://cdn.worldvectorlogo.com/logos/calvin-klein.svg";
-const LOGO_LACOSTE = "https://cdn.worldvectorlogo.com/logos/lacoste-1.svg";
-const LOGO_ALPHA = "https://cdn.worldvectorlogo.com/logos/alpha-industries.svg";
-const LOGO_GAP = "https://cdn.worldvectorlogo.com/logos/gap.svg";
-const LOGO_GUCCI = "https://cdn.worldvectorlogo.com/logos/gucci.svg";
-const LOGO_PRADA = "https://cdn.worldvectorlogo.com/logos/prada.svg";
-const LOGO_GUESS = "https://cdn.worldvectorlogo.com/logos/guess-1.svg";
-const LOGO_MK = "https://cdn.worldvectorlogo.com/logos/michael-kors.svg";
-const LOGO_BURBERRY = "https://cdn.worldvectorlogo.com/logos/burberry-logo-1.svg";
-const LOGO_UA = "https://cdn.worldvectorlogo.com/logos/under-armour-2.svg";
-const LOGO_BOSS = "https://cdn.worldvectorlogo.com/logos/hugo-boss.svg";
-const LOGO_DKNY = "https://cdn.worldvectorlogo.com/logos/dkny.svg";
-const LOGO_DRMARTENS = "https://cdn.worldvectorlogo.com/logos/dr-martens.svg";
-const LOGO_ECCO = "https://cdn.worldvectorlogo.com/logos/ecco.svg";
+const LOGO_COLUMBIA = "/logos/columbia.svg";
+const LOGO_HM = "/logos/h-m.svg";
+const LOGO_LEVIS = "/logos/levis.svg";
+const LOGO_NIKE = "/logos/nike.svg";
+const LOGO_NB = "/logos/new-balance.svg";
+const LOGO_ADIDAS = "/logos/adidas.svg";
+const LOGO_PUMA = "/logos/puma.svg";
+const LOGO_TNF = "/logos/the-north-face.svg";
+const LOGO_FILA = "/logos/fila.svg";
+const LOGO_CONVERSE = "/logos/converse.svg";
+const LOGO_CROCS = "/logos/crocs.svg";
+const LOGO_HH = "/logos/helly-hansen.svg";
+const LOGO_HOLLISTER = "/logos/hollister.svg";
+const LOGO_CARHARTT = "/logos/carhartt.svg";
+const LOGO_UNIQLO = "/logos/uniqlo.svg";
+const LOGO_F21 = "/logos/forever-21.svg";
+const LOGO_UGG = "/logos/ugg.svg";
+const LOGO_ZARA = "/logos/zara.svg";
+const LOGO_MANGO = "/logos/mango.svg";
+const LOGO_RL = "/logos/ralph-lauren.svg";
+const LOGO_TIMBERLAND = "/logos/timberland.svg";
+const LOGO_TH = "/logos/tommy-hilfiger.svg";
+const LOGO_CK = "/logos/calvin-klein.svg";
+const LOGO_LACOSTE = "/logos/lacoste.svg";
+const LOGO_ALPHA = "/logos/alpha-industries.svg";
+const LOGO_GAP = "/logos/gap.svg";
+const LOGO_GUCCI = "/logos/gucci.svg";
+const LOGO_PRADA = "/logos/prada.svg";
+const LOGO_GUESS = "/logos/guess.svg";
+const LOGO_MK = "/logos/michael-kors.svg";
+const LOGO_BURBERRY = "/logos/burberry.svg";
+const LOGO_UA = "/logos/under-armour.svg";
+const LOGO_BOSS = "/logos/boss.svg";
+const LOGO_DKNY = "/logos/dkny.svg";
+const LOGO_DRMARTENS = "/logos/dr-martens.svg";
+const LOGO_ECCO = "/logos/ecco.svg";
 
 // --- ТАБЛИЦЫ РАЗМЕРОВ ОДЕЖДЫ ---
 const colTopsM = [{ half_chest: 42.5, int: "XS", us: "34", eu: "44" }, { half_chest: 46.5, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
