@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// ИМПОРТИРУЕМ НАШУ БАЗУ ДАННЫХ И УМНЫЕ ФУНКЦИИ
 import { sizeDatabase, findNearestShoe, findNearestClothes } from './data';
 
+// --- КОМПОНЕНТ РУЛЕТКИ (БЕЗ ИЗМЕНЕНИЙ) ---
 const RulerPicker = ({ value, onChange, min, max, step }) => {
   const steps = useMemo(() => {
     const s = [];
@@ -60,7 +62,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('tops'); 
   const [[currentIndex, direction], setDirection] = useState([0, 0]); 
   
-  // Жестко фиксируем пол на 'male' без UI, как договаривались
+  // Жестко фиксируем пол на 'male', как договаривались
   const [gender] = useState('male');
   
   const [sizes, setSizes] = useState(() => {
@@ -92,17 +94,25 @@ export default function App() {
 
   const currentCategory = sizeDatabase[activeTab];
 
-  const variants = {
+  // Варианты анимации для выезда КАРТОЧЕК целиком при смене вкладки
+  const cardVariants = {
     enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
     center: { x: 0, opacity: 1 },
     exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
+  };
+
+  // --- НОВОЕ: ВАРИАНТЫ АНИМАЦИИ ДЛЯ ЦИФР (FADE EFFECT) ---
+  const fadeVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 }
   };
 
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* ХЕДЕР С ВКЛАДКАМИ (без тумблера и заголовка) */}
+        {/* ХЕДЕР С ВКЛАДКАМИ (БЕЗ ИЗМЕНЕНИЙ) */}
         <div className="px-5 mb-8 flex gap-2 shrink-0">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div 
@@ -135,7 +145,7 @@ export default function App() {
 
           <div className="relative flex-1 overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
-              <motion.div key={activeTab} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} className="space-y-3 overflow-y-auto pb-10 scrollbar-hide absolute inset-0">
+              <motion.div key={activeTab} custom={direction} variants={cardVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} className="space-y-3 overflow-y-auto pb-10 scrollbar-hide absolute inset-0">
                 {currentCategory.brands.map((brand, idx) => {
                   if (activeTab === 'shoes') {
                     const size = findNearestShoe(gender, sizes.shoes);
@@ -145,9 +155,37 @@ export default function App() {
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
                         <div className="flex-1 flex justify-around pr-4 text-center">
-                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.eu}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div></div>
-                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.us}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div></div>
-                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.uk}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Uk</div></div>
+                          
+                          {/* EU РАЗМЕР С FADE-ЭФФЕКТОМ */}
+                          <div className="text-center">
+                            <AnimatePresence mode="popLayout">
+                              <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
+                                {size.eu}
+                              </motion.div>
+                            </AnimatePresence>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div>
+                          </div>
+
+                          {/* US РАЗМЕР С FADE-ЭФФЕКТОМ */}
+                          <div className="text-center">
+                            <AnimatePresence mode="popLayout">
+                              <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
+                                {size.us}
+                              </motion.div>
+                            </AnimatePresence>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
+                          </div>
+
+                          {/* UK РАЗМЕР С FADE-ЭФФЕКТОМ */}
+                          <div className="text-center">
+                            <AnimatePresence mode="popLayout">
+                              <motion.div key={size.uk} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
+                                {size.uk}
+                              </motion.div>
+                            </AnimatePresence>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Uk</div>
+                          </div>
+
                         </div>
                       </div>
                     );
@@ -159,9 +197,37 @@ export default function App() {
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
                         <div className="flex-1 flex justify-around pr-4 text-center">
-                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.int}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Int</div></div>
-                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.us}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div></div>
-                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.eu}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div></div>
+                          
+                          {/* INT РАЗМЕР С FADE-ЭФФЕКТОМ */}
+                          <div className="text-center">
+                            <AnimatePresence mode="popLayout">
+                              <motion.div key={size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
+                                {size.int}
+                              </motion.div>
+                            </AnimatePresence>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Int</div>
+                          </div>
+
+                          {/* US РАЗМЕР С FADE-ЭФФЕКТОМ */}
+                          <div className="text-center">
+                            <AnimatePresence mode="popLayout">
+                              <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
+                                {size.us}
+                              </motion.div>
+                            </AnimatePresence>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
+                          </div>
+
+                          {/* EU РАЗМЕР С FADE-ЭФФЕКТОМ */}
+                          <div className="text-center">
+                            <AnimatePresence mode="popLayout">
+                              <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
+                                {size.eu}
+                              </motion.div>
+                            </AnimatePresence>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div>
+                          </div>
+
                         </div>
                       </div>
                     );
