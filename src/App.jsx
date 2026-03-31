@@ -108,12 +108,21 @@ export default function App() {
       sText = `EU: ${sizeData.eu}, US: ${sizeData.us}, UK: ${sizeData.uk}`;
     }
 
-    const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sText}\n\nhttps://t.me/i_know_my_size_bot`;
-    window.Telegram?.WebApp?.switchInlineQuery(message, ['users', 'groups', 'channels']);
-    window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+    const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sizeText}\n\nhttps://t.me/i_know_my_size_bot`;
+    
+    // Вызов системного окна Telegram для выбора чата
+    if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
+        window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
+    } else {
+        // Запасной вариант для дебага в обычном браузере
+        console.log("Sharing message:", message);
+        alert("Функция работает только внутри Telegram!");
+    }
   };
 
   const currentCategory = sizeDatabase[activeTab];
+  const fadeVariants = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -8 } };
 
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
@@ -165,21 +174,40 @@ export default function App() {
                       </div>
                       <div className="flex-1 flex pr-2 mt-[3px]">
                         <div className="flex-1 flex flex-col items-center">
-                          <div className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.eu : size.int}</div>
+                          <AnimatePresence mode="popLayout">
+                            <motion.div key={activeTab === 'shoes' ? size.eu : size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                              {activeTab === 'shoes' ? size.eu : size.int}
+                            </motion.div>
+                          </AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Eu' : 'Int'}</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center">
-                          <div className="text-[24px] font-black text-[#838383] leading-none">{size.us}</div>
+                          <AnimatePresence mode="popLayout">
+                            <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                              {size.us}
+                            </motion.div>
+                          </AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center">
-                          <div className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.uk : size.eu}</div>
+                          <AnimatePresence mode="popLayout">
+                            <motion.div key={activeTab === 'shoes' ? size.uk : size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                              {activeTab === 'shoes' ? size.uk : size.eu}
+                            </motion.div>
+                          </AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Uk' : 'Eu'}</div>
                         </div>
                       </div>
-                      <button onClick={() => handleShare(brand.name, size)} className="w-10 h-10 rounded-full bg-[#F2F2F7] flex items-center justify-center active:scale-90 transition-transform shrink-0">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#838383" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      
+                      {/* ОБНОВЛЕННАЯ КНОПКА SHARE */}
+                      <button 
+                        onClick={() => handleShare(brand.name, size)} 
+                        className="p-3 text-[#838383]/60 active:opacity-40 transition-opacity shrink-0"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                            <polyline points="16 6 12 2 8 6" />
+                            <line x1="12" y1="2" x2="12" y2="15" />
                         </svg>
                       </button>
                     </div>
