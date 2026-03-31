@@ -10,7 +10,9 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
     return s;
   }, [min, max, step]);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ axis: 'x', align: 'center', containScroll: false, duration: 35 });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    axis: 'x', align: 'center', containScroll: false, duration: 35 
+  });
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -112,7 +114,6 @@ export default function App() {
 
   const currentCategory = sizeDatabase[activeTab];
   
-  // Варианты анимации для карточек (движение в стороны)
   const cardVariants = {
     enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
     center: { x: 0, opacity: 1 },
@@ -125,7 +126,7 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* НАВИГАЦИЯ */}
+        {/* НАВИГАЦИЯ (z-50) */}
         <div className="px-5 mb-5 flex gap-2 shrink-0 z-50">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
@@ -139,18 +140,19 @@ export default function App() {
 
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden">
           
-          {/* НИЖНИЙ СЛОЙ: РУЛЕТКА (z-10) */}
-          <div className="absolute top-0 left-0 right-0 z-10 pt-8 px-4 pb-6">
+          {/* СЛОЙ 1: РУЛЕТКА (z-30) - Теперь выше карточек, но ограничена по высоте */}
+          <div className={`absolute top-0 left-0 right-0 z-30 pt-8 px-4 pb-6 h-[155px] pointer-events-none`}>
             <motion.div 
                 animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className={`${isScrolled ? 'pointer-events-none' : 'pointer-events-auto'}`}
             >
                 <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
                 <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
             </motion.div>
           </div>
 
-          {/* ВЕРХНИЙ СЛОЙ: КАРТОЧКИ (z-20) С АНИМАЦИЕЙ ДВИЖЕНИЯ */}
+          {/* СЛОЙ 2: КАРТОЧКИ (z-20) */}
           <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
