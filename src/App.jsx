@@ -2,10 +2,8 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// ИМПОРТИРУЕМ НАШУ БАЗУ ДАННЫХ И УМНЫЕ ФУНКЦИИ
 import { sizeDatabase, findNearestShoe, findNearestClothes } from './data';
 
-// --- КОМПОНЕНТ РУЛЕТКИ (БЕЗ ИЗМЕНЕНИЙ) ---
 const RulerPicker = ({ value, onChange, min, max, step }) => {
   const steps = useMemo(() => {
     const s = [];
@@ -62,7 +60,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('tops'); 
   const [[currentIndex, direction], setDirection] = useState([0, 0]); 
   
-  // Жестко фиксируем пол на 'male', как договаривались
   const [gender] = useState('male');
   
   const [sizes, setSizes] = useState(() => {
@@ -94,26 +91,25 @@ export default function App() {
 
   const currentCategory = sizeDatabase[activeTab];
 
-  // Варианты анимации для выезда КАРТОЧЕК целиком при смене вкладки
   const cardVariants = {
     enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
     center: { x: 0, opacity: 1 },
     exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
   };
 
-  // --- НОВОЕ: ВАРИАНТЫ АНИМАЦИИ ДЛЯ ЦИФР (FADE EFFECT) ---
+  // ЭФФЕКТ ДЛЯ ЦИФР (С легким движением для большей красоты)
   const fadeVariants = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 }
+    initial: { opacity: 0, y: 8 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -8 }
   };
 
   return (
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* ХЕДЕР С ВКЛАДКАМИ (БЕЗ ИЗМЕНЕНИЙ) */}
-        <div className="px-5 mb-8 flex gap-2 shrink-0">
+        {/* ИЗМЕНЕНО: mb-8 заменено на mb-5 для уменьшения отступа */}
+        <div className="px-5 mb-5 flex gap-2 shrink-0">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div 
               className="absolute top-1 bottom-1 bg-black rounded-full"
@@ -156,33 +152,37 @@ export default function App() {
                         </div>
                         <div className="flex-1 flex justify-around pr-4 text-center">
                           
-                          {/* EU РАЗМЕР С FADE-ЭФФЕКТОМ */}
-                          <div className="text-center">
-                            <AnimatePresence mode="popLayout">
-                              <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
-                                {size.eu}
-                              </motion.div>
-                            </AnimatePresence>
+                          {/* ИЗМЕНЕНО: Добавлен контейнер h-[24px] и цвет #838383 */}
+                          <div className="flex flex-col items-center">
+                            <div className="relative h-[24px] flex justify-center items-center">
+                              <AnimatePresence mode="popLayout">
+                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                  {size.eu}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
                             <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div>
                           </div>
 
-                          {/* US РАЗМЕР С FADE-ЭФФЕКТОМ */}
-                          <div className="text-center">
-                            <AnimatePresence mode="popLayout">
-                              <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
-                                {size.us}
-                              </motion.div>
-                            </AnimatePresence>
+                          <div className="flex flex-col items-center">
+                            <div className="relative h-[24px] flex justify-center items-center">
+                              <AnimatePresence mode="popLayout">
+                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                  {size.us}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
                             <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
                           </div>
 
-                          {/* UK РАЗМЕР С FADE-ЭФФЕКТОМ */}
-                          <div className="text-center">
-                            <AnimatePresence mode="popLayout">
-                              <motion.div key={size.uk} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
-                                {size.uk}
-                              </motion.div>
-                            </AnimatePresence>
+                          <div className="flex flex-col items-center">
+                            <div className="relative h-[24px] flex justify-center items-center">
+                              <AnimatePresence mode="popLayout">
+                                <motion.div key={size.uk} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                  {size.uk}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
                             <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Uk</div>
                           </div>
 
@@ -198,33 +198,37 @@ export default function App() {
                         </div>
                         <div className="flex-1 flex justify-around pr-4 text-center">
                           
-                          {/* INT РАЗМЕР С FADE-ЭФФЕКТОМ */}
-                          <div className="text-center">
-                            <AnimatePresence mode="popLayout">
-                              <motion.div key={size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
-                                {size.int}
-                              </motion.div>
-                            </AnimatePresence>
+                          {/* ИЗМЕНЕНО: Добавлен контейнер h-[24px] и цвет #838383 */}
+                          <div className="flex flex-col items-center">
+                            <div className="relative h-[24px] flex justify-center items-center">
+                              <AnimatePresence mode="popLayout">
+                                <motion.div key={size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                  {size.int}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
                             <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Int</div>
                           </div>
 
-                          {/* US РАЗМЕР С FADE-ЭФФЕКТОМ */}
-                          <div className="text-center">
-                            <AnimatePresence mode="popLayout">
-                              <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
-                                {size.us}
-                              </motion.div>
-                            </AnimatePresence>
+                          <div className="flex flex-col items-center">
+                            <div className="relative h-[24px] flex justify-center items-center">
+                              <AnimatePresence mode="popLayout">
+                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                  {size.us}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
                             <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
                           </div>
 
-                          {/* EU РАЗМЕР С FADE-ЭФФЕКТОМ */}
-                          <div className="text-center">
-                            <AnimatePresence mode="popLayout">
-                              <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.15 }} className="text-[24px] font-black text-black/70 leading-none h-[24px]">
-                                {size.eu}
-                              </motion.div>
-                            </AnimatePresence>
+                          <div className="flex flex-col items-center">
+                            <div className="relative h-[24px] flex justify-center items-center">
+                              <AnimatePresence mode="popLayout">
+                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                  {size.eu}
+                                </motion.div>
+                              </AnimatePresence>
+                            </div>
                             <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div>
                           </div>
 
