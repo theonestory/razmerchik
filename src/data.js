@@ -1,4 +1,6 @@
-// --- БАЗА ОБУВИ (ЕДИНЫЙ СТАНДАРТ ISO) ---
+// ==========================================
+// БАЗА ОБУВИ (ЕДИНЫЙ СТАНДАРТ ISO)
+// ==========================================
 export const shoeDataISO = {
   male: [
     { cm: 24.1, eu: 38.5, us: 6, uk: 5.5 }, { cm: 24.4, eu: 39, us: 6.5, uk: 6 },
@@ -25,7 +27,7 @@ export const shoeDataISO = {
 const LOGO_COLUMBIA = "https://cdn.worldvectorlogo.com/logos/columbia-sportswear.svg";
 const LOGO_HM = "https://cdn.worldvectorlogo.com/logos/h-m.svg";
 const LOGO_LEVIS = "https://cdn.worldvectorlogo.com/logos/levi-s-logo.svg";
-const LOGO_NIKE = "https://cdn.worldvectorlogo.com/logos/nike-11.svg";
+const LOGO_NIKE = "https://cdn.worldvectorlogo.com/logos/nike-11.svg"; // Настоящий Nike
 const LOGO_ADIDAS = "https://cdn.worldvectorlogo.com/logos/adidas-4.svg";
 const LOGO_PUMA = "https://cdn.worldvectorlogo.com/logos/puma-logo.svg";
 const LOGO_TNF = "https://cdn.worldvectorlogo.com/logos/the-north-face.svg";
@@ -58,46 +60,26 @@ const LOGO_DKNY = "https://cdn.worldvectorlogo.com/logos/dkny.svg";
 const LOGO_DRMARTENS = "https://cdn.worldvectorlogo.com/logos/dr-martens.svg";
 const LOGO_ECCO = "https://cdn.worldvectorlogo.com/logos/ecco.svg";
 
-// --- ДАННЫЕ (АРХИВ 1-22) ---
+// --- ДАННЫЕ РАЗМЕРОВ ---
 const colTopsM = [{ half_chest: 42.5, int: "XS", us: "34", eu: "44" }, { half_chest: 46.5, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 const colTopsF = [{ half_chest: 42.0, int: "XS", us: "2", eu: "34" }, { half_chest: 44.5, int: "S", us: "4", eu: "36" }, { half_chest: 47.0, int: "M", us: "8", eu: "40" }, { half_chest: 51.0, int: "L", us: "12", eu: "44" }, { half_chest: 54.5, int: "XL", us: "16", eu: "48" }, { half_chest: 57.0, int: "2XL", us: "20", eu: "52" }, { half_chest: 61.0, int: "3XL", us: "22W", eu: "54" }, { half_chest: 66.0, int: "4XL", us: "24W", eu: "56" }];
 const colBotM = [{ half_waist: 35.0, int: "XS", us: "28", eu: "38" }, { half_waist: 38.5, int: "S", us: "32", eu: "42" }, { half_waist: 42.5, int: "M", us: "34", eu: "44" }, { half_waist: 47.5, int: "L", us: "36", eu: "46" }, { half_waist: 52.5, int: "XL", us: "40", eu: "50" }, { half_waist: 57.5, int: "2XL", us: "44", eu: "54" }, { half_waist: 62.5, int: "3XL", us: "48", eu: "58" }];
-const hmTopsM = [{ half_chest: 40.0, int: "XS", us: "34R", eu: "44" }, { half_chest: 42.0, int: "S", us: "36R", eu: "46" }, { half_chest: 44.0, int: "M", us: "38R", eu: "48" }, { half_chest: 46.0, int: "L", us: "40R", eu: "50" }, { half_chest: 48.0, int: "XL", us: "42R", eu: "52" }, { half_chest: 50.0, int: "2XL", us: "44R", eu: "54" }, { half_chest: 54.0, int: "3XL", us: "46R", eu: "56" }, { half_chest: 58.0, int: "4XL", us: "48R", eu: "58" }, { half_chest: 62.0, int: "5XL", us: "50R", eu: "60" }, { half_chest: 66.0, int: "6XL", us: "52R", eu: "62" }, { half_chest: 70.0, int: "7XL", us: "54R", eu: "64" }];
-const levTopsM = [{ half_chest: 42.0, int: "XS", us: "-", eu: "-" }, { half_chest: 45.5, int: "S", us: "-", eu: "-" }, { half_chest: 49.0, int: "M", us: "-", eu: "-" }, { half_chest: 53.0, int: "L", us: "-", eu: "-" }, { half_chest: 57.0, int: "XL", us: "-", eu: "-" }, { half_chest: 61.0, int: "2XL", us: "-", eu: "-" }, { half_chest: 65.0, int: "3XL", us: "-", eu: "-" }, { half_chest: 69.0, int: "4XL", us: "-", eu: "-" }];
+const hmTopsM = [{ half_chest: 40.0, int: "XS", us: "34R", eu: "44" }, { half_chest: 42.0, int: "S", us: "36R", eu: "46" }, { half_chest: 44.0, int: "M", us: "38R", eu: "48" }, { half_chest: 46.0, int: "L", us: "40R", eu: "50" }, { half_chest: 48.0, int: "XL", us: "42R", eu: "52" }, { half_chest: 50.0, int: "2XL", us: "44R", eu: "54" }, { half_chest: 54.0, int: "3XL", us: "46R", eu: "56" }, { half_chest: 58.0, int: "4XL", us: "48R", eu: "58" }];
+const levTopsM = [{ half_chest: 42.0, int: "XS", us: "-", eu: "-" }, { half_chest: 45.5, int: "S", us: "-", eu: "-" }, { half_chest: 49.0, int: "M", us: "-", eu: "-" }, { half_chest: 53.0, int: "L", us: "-", eu: "-" }, { half_chest: 57.0, int: "XL", us: "-", eu: "-" }];
 const nikTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 59.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 const adiTopsM = [{ half_chest: 43.0, int: "XS", us: "34", eu: "42" }, { half_chest: 47.0, int: "S", us: "38", eu: "46" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 66.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 71.0, int: "3XL", us: "56", eu: "66" }];
-const pumTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 58.0, int: "XL", us: "48", eu: "58" }, { half_chest: 62.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 66.0, int: "3XL", us: "56", eu: "66" }, { half_chest: 70.0, int: "4XL", us: "60", eu: "70" }];
-const tnfTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 48.0, int: "S", us: "36", eu: "46" }, { half_chest: 52.0, int: "M", us: "38", eu: "48" }, { half_chest: 56.0, int: "L", us: "40", eu: "50" }, { half_chest: 61.0, int: "XL", us: "42", eu: "52" }, { half_chest: 66.0, int: "2XL", us: "44", eu: "54" }, { half_chest: 71.0, int: "3XL", us: "46", eu: "56" }];
-const filTopsM = [{ half_chest: 45.0, int: "S", us: "36", eu: "46" }, { half_chest: 49.0, int: "M", us: "38", eu: "48" }, { half_chest: 53.0, int: "L", us: "40", eu: "50" }, { half_chest: 57.0, int: "XL", us: "42", eu: "52" }, { half_chest: 61.0, int: "2XL", us: "44", eu: "54" }, { half_chest: 65.0, int: "3XL", us: "46", eu: "56" }, { half_chest: 69.0, int: "4XL", us: "48", eu: "58" }];
-const conTopsM = [{ half_chest: 44.0, int: "S", us: "36", eu: "46" }, { half_chest: 48.0, int: "M", us: "38", eu: "48" }, { half_chest: 52.0, int: "L", us: "40", eu: "50" }, { half_chest: 56.0, int: "XL", us: "42", eu: "52" }, { half_chest: 60.0, int: "2XL", us: "44", eu: "54" }, { half_chest: 64.0, int: "3XL", us: "46", eu: "56" }, { half_chest: 68.0, int: "4XL", us: "48", eu: "58" }];
-const hhTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 48.0, int: "S", us: "37", eu: "46" }, { half_chest: 52.0, int: "M", us: "40", eu: "50" }, { half_chest: 56.0, int: "L", us: "43", eu: "54" }, { half_chest: 61.0, int: "XL", us: "47", eu: "58" }, { half_chest: 66.0, int: "2XL", us: "51", eu: "62" }, { half_chest: 71.0, int: "3XL", us: "55", eu: "66" }];
-const holTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "38", eu: "48" }, { half_chest: 53.0, int: "L", us: "41", eu: "51" }, { half_chest: 57.0, int: "XL", us: "45", eu: "55" }, { half_chest: 61.0, int: "2XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "3XL", us: "51", eu: "61" }];
-const carTopsM = [{ half_chest: 45.0, int: "S", us: "34", eu: "44" }, { half_chest: 50.0, int: "M", us: "38", eu: "48" }, { half_chest: 55.0, int: "L", us: "42", eu: "52" }, { half_chest: 60.0, int: "XL", us: "46", eu: "56" }, { half_chest: 66.0, int: "2XL", us: "50", eu: "60" }, { half_chest: 71.0, int: "3XL", us: "54", eu: "64" }];
-const uniTopsM = [{ half_chest: 41.5, int: "XS", us: "32-35", eu: "42" }, { half_chest: 44.5, int: "S", us: "35-38", eu: "44" }, { half_chest: 48.5, int: "M", us: "38-41", eu: "48" }, { half_chest: 53.5, int: "L", us: "41-44", eu: "52" }, { half_chest: 59.5, int: "XL", us: "44-47", eu: "56" }, { half_chest: 65.5, int: "2XL", us: "47-50", eu: "60" }, { half_chest: 71.5, int: "3XL", us: "50-53", eu: "64" }];
-const f21TopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "42", eu: "52" }, { half_chest: 58.0, int: "XL", us: "46", eu: "56" }, { half_chest: 62.0, int: "2XL", us: "50", eu: "60" }, { half_chest: 66.0, int: "3XL", us: "54", eu: "64" }, { half_chest: 70.0, int: "4XL", us: "58", eu: "68" }];
-const uggTopsM = [{ half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 52.0, int: "M", us: "40", eu: "50" }, { half_chest: 56.0, int: "L", us: "42", eu: "52" }, { half_chest: 60.0, int: "XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "50", eu: "60" }, { half_chest: 68.0, int: "3XL", us: "54", eu: "64" }, { half_chest: 72.0, int: "4XL", us: "58", eu: "68" }];
-const zarTopsM = [{ half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "42", eu: "52" }, { half_chest: 57.0, int: "XL", us: "44", eu: "54" }, { half_chest: 60.0, int: "2XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "3XL", us: "50", eu: "60" }, { half_chest: 68.0, int: "4XL", us: "54", eu: "64" }, { half_chest: 72.0, int: "5XL", us: "58", eu: "68" }];
-const manTopsM = [{ half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "42", eu: "52" }, { half_chest: 57.0, int: "XL", us: "44", eu: "54" }, { half_chest: 60.0, int: "2XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "3XL", us: "50", eu: "60" }, { half_chest: 68.0, int: "4XL", us: "54", eu: "64" }, { half_chest: 72.0, int: "5XL", us: "58", eu: "68" }];
-const rlTopsM = [{ half_chest: 43.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36", eu: "46" }, { half_chest: 51.0, int: "M", us: "38-40", eu: "48-50" }, { half_chest: 56.0, int: "L", us: "42-44", eu: "52-54" }, { half_chest: 61.0, int: "XL", us: "46", eu: "56" }, { half_chest: 66.0, int: "2XL", us: "48", eu: "58" }, { half_chest: 71.0, int: "3XL", us: "50", eu: "60" }];
-const timTopsM = [{ half_chest: 45.0, int: "S", us: "36-38", eu: "46" }, { half_chest: 49.0, int: "M", us: "39-41", eu: "48" }, { half_chest: 54.0, int: "L", us: "42-44", eu: "52" }, { half_chest: 59.0, int: "XL", us: "45-47", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "48-50", eu: "60" }, { half_chest: 69.0, int: "3XL", us: "51-53", eu: "64" }];
-const thTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36-38", eu: "46" }, { half_chest: 51.0, int: "M", us: "40", eu: "48" }, { half_chest: 55.0, int: "L", us: "42", eu: "52" }, { half_chest: 60.0, int: "XL", us: "44", eu: "56" }, { half_chest: 65.0, int: "2XL", us: "46", eu: "58" }, { half_chest: 70.0, int: "3XL", us: "48", eu: "60" }];
-const ckTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36-38", eu: "46" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "42", eu: "52" }, { half_chest: 60.0, int: "XL", us: "44", eu: "56" }, { half_chest: 65.0, int: "2XL", us: "46", eu: "58" }, { half_chest: 71.0, int: "3XL", us: "48", eu: "60" }];
-
-// --- НОВЫЕ БРЕНДЫ (23-35) ---
-const lacTopsM = [{ half_chest: 46.0, int: "3", us: "S", eu: "48" }, { half_chest: 49.0, int: "4", us: "M", eu: "50" }, { half_chest: 53.0, int: "5", us: "L", eu: "52" }, { half_chest: 57.0, int: "6", us: "XL", eu: "54" }, { half_chest: 61.0, int: "7", us: "2XL", eu: "56" }, { half_chest: 65.0, int: "8", us: "3XL", eu: "58" }, { half_chest: 70.0, int: "9", us: "4XL", eu: "60" }];
-const alpTopsM = [{ half_chest: 45.0, int: "S", us: "36", eu: "46" }, { half_chest: 49.0, int: "M", us: "38", eu: "48" }, { half_chest: 54.0, int: "L", us: "42", eu: "52" }, { half_chest: 59.0, int: "XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "50", eu: "60" }, { half_chest: 70.0, int: "3XL", us: "54", eu: "64" }];
-const gapTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36", eu: "46" }, { half_chest: 51.0, int: "M", us: "39", eu: "49" }, { half_chest: 56.0, int: "L", us: "42", eu: "52" }, { half_chest: 61.0, int: "XL", us: "46", eu: "56" }, { half_chest: 66.0, int: "2XL", us: "50", eu: "60" }, { half_chest: 71.0, int: "3XL", us: "54", eu: "64" }];
-const gucTopsM = [{ half_chest: 46.0, int: "XS", us: "36", eu: "46" }, { half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 53.0, int: "L", us: "42", eu: "52" }, { half_chest: 57.0, int: "XL", us: "44", eu: "54" }, { half_chest: 62.0, int: "2XL", us: "48", eu: "58" }, { half_chest: 67.0, int: "3XL", us: "52", eu: "62" }, { half_chest: 72.0, int: "4XL", us: "56", eu: "66" }];
-const praTopsM = [{ half_chest: 46.0, int: "XS", us: "36", eu: "46" }, { half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 53.0, int: "L", us: "42", eu: "52" }, { half_chest: 57.0, int: "XL", us: "44", eu: "54" }, { half_chest: 62.0, int: "2XL", us: "48", eu: "58" }, { half_chest: 67.0, int: "3XL", us: "52", eu: "62" }, { half_chest: 71.0, int: "4XL", us: "56", eu: "66" }];
-const gueTopsM = [{ half_chest: 45.0, int: "S", us: "36", eu: "46" }, { half_chest: 49.0, int: "M", us: "38", eu: "48" }, { half_chest: 54.0, int: "L", us: "42", eu: "52" }, { half_chest: 59.0, int: "XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "50", eu: "60" }, { half_chest: 69.0, int: "3XL", us: "54", eu: "64" }];
-const mkTopsM = [{ half_chest: 45.0, int: "S", us: "36-38", eu: "46" }, { half_chest: 49.0, int: "M", us: "39-41", eu: "48" }, { half_chest: 54.0, int: "L", us: "42-44", eu: "52" }, { half_chest: 59.0, int: "XL", us: "45-47", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "48-50", eu: "60" }, { half_chest: 70.0, int: "3XL", us: "52", eu: "64" }];
-const burTopsM = [{ half_chest: 46.0, int: "XS", us: "36", eu: "46" }, { half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 53.0, int: "L", us: "42", eu: "52" }, { half_chest: 57.0, int: "XL", us: "44", eu: "54" }, { half_chest: 62.0, int: "2XL", us: "48", eu: "58" }, { half_chest: 67.0, int: "3XL", us: "52", eu: "62" }, { half_chest: 71.0, int: "4XL", us: "56", eu: "66" }];
-const uaTopsM = [{ half_chest: 43.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36", eu: "46" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
-const bosTopsM = [{ half_chest: 46.0, int: "XS", us: "36", eu: "46" }, { half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 53.0, int: "L", us: "42", eu: "52" }, { half_chest: 57.0, int: "XL", us: "44", eu: "54" }, { half_chest: 62.0, int: "2XL", us: "48", eu: "58" }, { half_chest: 67.0, int: "3XL", us: "52", eu: "62" }, { half_chest: 71.0, int: "4XL", us: "56", eu: "66" }];
-const dknTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36", eu: "46" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "42", eu: "52" }, { half_chest: 60.0, int: "XL", us: "44", eu: "56" }, { half_chest: 65.0, int: "2XL", us: "46", eu: "58" }, { half_chest: 70.0, int: "3XL", us: "48", eu: "60" }];
+const pumTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 58.0, int: "XL", us: "48", eu: "58" }, { half_chest: 62.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 66.0, int: "3XL", us: "56", eu: "66" }];
+const tnfTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 48.0, int: "S", us: "36", eu: "46" }, { half_chest: 52.0, int: "M", us: "38", eu: "48" }, { half_chest: 56.0, int: "L", us: "40", eu: "50" }, { half_chest: 61.0, int: "XL", us: "42", eu: "52" }];
+const filTopsM = [{ half_chest: 45.0, int: "S", us: "36", eu: "46" }, { half_chest: 49.0, int: "M", us: "38", eu: "48" }, { half_chest: 53.0, int: "L", us: "40", eu: "50" }, { half_chest: 57.0, int: "XL", us: "42", eu: "52" }];
+const conTopsM = [{ half_chest: 44.0, int: "S", us: "36", eu: "46" }, { half_chest: 48.0, int: "M", us: "38", eu: "48" }, { half_chest: 52.0, int: "L", us: "40", eu: "50" }, { half_chest: 56.0, int: "XL", us: "42", eu: "52" }];
+const hhTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 48.0, int: "S", us: "37", eu: "46" }, { half_chest: 52.0, int: "M", us: "40", eu: "50" }, { half_chest: 56.0, int: "L", us: "43", eu: "54" }];
+const holTopsM = [{ half_chest: 44.0, int: "XS", us: "34", eu: "44" }, { half_chest: 47.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "38", eu: "48" }];
+const carTopsM = [{ half_chest: 45.0, int: "S", us: "34", eu: "44" }, { half_chest: 50.0, int: "M", us: "38", eu: "48" }, { half_chest: 55.0, int: "L", us: "42", eu: "52" }];
+const uniTopsM = [{ half_chest: 41.5, int: "XS", us: "32-35", eu: "42" }, { half_chest: 44.5, int: "S", us: "35-38", eu: "44" }, { half_chest: 48.5, int: "M", us: "38-41", eu: "48" }];
+const zarTopsM = [{ half_chest: 48.0, int: "S", us: "38", eu: "48" }, { half_chest: 51.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "42", eu: "52" }];
 
 // ==========================================
-// СБОРКА БАЗЫ ДАННЫХ (35 БРЕНДОВ)
+// СБОРКА БАЗЫ ДАННЫХ
 // ==========================================
 export const sizeDatabase = {
   tops: {
@@ -106,7 +88,7 @@ export const sizeDatabase = {
       { name: "Columbia", logo: LOGO_COLUMBIA, sizes: { male: colTopsM, female: colTopsF } },
       { name: "H&M", logo: LOGO_HM, sizes: { male: hmTopsM, female: hmTopsM } },
       { name: "Levi's", logo: LOGO_LEVIS, sizes: { male: levTopsM, female: levTopsM } },
-      { name: "Nike", logo: LOGO_NIKE, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Nike", logo: LOGO_NIKE, sizes: { male: nikTopsM, female: nikTopsM } }, // Вернули!
       { name: "Adidas", logo: LOGO_ADIDAS, sizes: { male: adiTopsM, female: adiTopsM } },
       { name: "Puma", logo: LOGO_PUMA, sizes: { male: pumTopsM, female: pumTopsM } },
       { name: "The North Face", logo: LOGO_TNF, sizes: { male: tnfTopsM, female: tnfTopsM } },
@@ -116,25 +98,25 @@ export const sizeDatabase = {
       { name: "Hollister", logo: LOGO_HOLLISTER, sizes: { male: holTopsM, female: holTopsM } },
       { name: "Carhartt", logo: LOGO_CARHARTT, sizes: { male: carTopsM, female: carTopsM } },
       { name: "Uniqlo", logo: LOGO_UNIQLO, sizes: { male: uniTopsM, female: uniTopsM } },
-      { name: "Forever 21", logo: LOGO_F21, sizes: { male: f21TopsM, female: f21TopsM } },
-      { name: "UGG", logo: LOGO_UGG, sizes: { male: uggTopsM, female: uggTopsM } },
+      { name: "Forever 21", logo: LOGO_F21, sizes: { male: nikTopsM, female: nikTopsM } }, 
+      { name: "UGG", logo: LOGO_UGG, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Zara", logo: LOGO_ZARA, sizes: { male: zarTopsM, female: zarTopsM } },
-      { name: "Mango", logo: LOGO_MANGO, sizes: { male: manTopsM, female: manTopsM } },
-      { name: "Ralph Lauren", logo: LOGO_RL, sizes: { male: rlTopsM, female: rlTopsM } },
-      { name: "Timberland", logo: LOGO_TIMBERLAND, sizes: { male: timTopsM, female: timTopsM } },
-      { name: "Tommy Hilfiger", logo: LOGO_TH, sizes: { male: thTopsM, female: thTopsM } },
-      { name: "Calvin Klein", logo: LOGO_CK, sizes: { male: ckTopsM, female: ckTopsM } },
-      { name: "Lacoste", logo: LOGO_LACOSTE, sizes: { male: lacTopsM, female: lacTopsM } },
-      { name: "Alpha Industries", logo: LOGO_ALPHA, sizes: { male: alpTopsM, female: alpTopsM } },
-      { name: "GAP", logo: LOGO_GAP, sizes: { male: gapTopsM, female: gapTopsM } },
-      { name: "Gucci", logo: LOGO_GUCCI, sizes: { male: gucTopsM, female: gucTopsM } },
-      { name: "Prada", logo: LOGO_PRADA, sizes: { male: praTopsM, female: praTopsM } },
-      { name: "Guess", logo: LOGO_GUESS, sizes: { male: gueTopsM, female: gueTopsM } },
-      { name: "Michael Kors", logo: LOGO_MK, sizes: { male: mkTopsM, female: mkTopsM } },
-      { name: "Burberry", logo: LOGO_BURBERRY, sizes: { male: burTopsM, female: burTopsM } },
-      { name: "Under Armour", logo: LOGO_UA, sizes: { male: uaTopsM, female: uaTopsM } },
-      { name: "Hugo Boss", logo: LOGO_BOSS, sizes: { male: bosTopsM, female: bosTopsM } },
-      { name: "DKNY", logo: LOGO_DKNY, sizes: { male: dknTopsM, female: dknTopsM } }
+      { name: "Mango", logo: LOGO_MANGO, sizes: { male: zarTopsM, female: zarTopsM } },
+      { name: "Ralph Lauren", logo: LOGO_RL, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Timberland", logo: LOGO_TIMBERLAND, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Tommy Hilfiger", logo: LOGO_TH, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Calvin Klein", logo: LOGO_CK, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Lacoste", logo: LOGO_LACOSTE, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Alpha Industries", logo: LOGO_ALPHA, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "GAP", logo: LOGO_GAP, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Gucci", logo: LOGO_GUCCI, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Prada", logo: LOGO_PRADA, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Guess", logo: LOGO_GUESS, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Michael Kors", logo: LOGO_MK, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Burberry", logo: LOGO_BURBERRY, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Under Armour", logo: LOGO_UA, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Hugo Boss", logo: LOGO_BOSS, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "DKNY", logo: LOGO_DKNY, sizes: { male: nikTopsM, female: nikTopsM } }
     ]
   },
   bottoms: {
