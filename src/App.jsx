@@ -1,106 +1,70 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const sizeDatabase = {
-  categories: {
-    tops: { parameter_name: "Полуобхват груди (см)", param_key: "half_chest", range: { min: 40, max: 80, step: 1 }, default_val: 60, 
-      brands: [
-        { name: "Nike", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg", sizes: [{ half_chest: 60, int: "3XL", us: "35", eu: "28" }] },
-        { name: "New Balance", logo: "https://upload.wikimedia.org/wikipedia/commons/e/ea/New_Balance_logo.svg", sizes: [{ half_chest: 60, int: "3XL", us: "35", eu: "28" }] },
-        { name: "Uniqlo", logo: "https://upload.wikimedia.org/wikipedia/commons/9/92/UNIQLO_logo.svg", sizes: [{ half_chest: 60, int: "3XL", us: "35", eu: "28" }] },
-        { name: "H&M", logo: "https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg", sizes: [{ half_chest: 60, int: "3XL", us: "35", eu: "28" }] }
-      ] 
-    },
-    bottoms: { parameter_name: "Полуобхват талии (см)", param_key: "half_waist", range: { min: 30, max: 80, step: 1 }, default_val: 60, 
-      brands: [{ name: "Nike", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg", sizes: [{ half_waist: 60, int: "W40", us: "35", eu: "28" }] }] 
-    },
-    shoes: { parameter_name: "Длина стельки (см)", param_key: "insole", range: { min: 20, max: 35, step: 0.5 }, default_val: 27.5, 
-      brands: [{ name: "Nike", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg", sizes: [{ insole: 27.5, int: "12", us: "10", eu: "9" }] }] 
-    }
-  }
-};
+// ИМПОРТИРУЕМ НАШУ БАЗУ ДАННЫХ
+import { sizeDatabase, findNearestShoe, findNearestClothes } from './data';
 
-const generateRuler = (min, max, step) => {
-  const ruler = [];
-  for (let i = min; i <= max; i += step) ruler.push(i);
-  return ruler;
-};
+const RulerPicker = ({ value, onChange, min, max, step }) => {
+  const steps = useMemo(() => {
+    const s = [];
+    for (let i = min; i <= max; i += step) s.push(i);
+    return s;
+  }, [min, max, step]);
 
-const findNearestSize = (sizes, key, target) => {
-  return sizes.reduce((prev, curr) => Math.abs(curr[key] - target) < Math.abs(prev[key] - target) ? curr : prev);
-};
-
-const RulerPicker = ({ value, onChange, range }) => {
-  const values = useMemo(() => generateRuler(range.min, range.max, range.step), [range]);
-  const [activeIndex, setActiveIndex] = useState(() => values.indexOf(value));
-  
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    axis: 'x', 
-    align: 'center', 
-    containScroll: false,
-    duration: 35 
+    axis: 'x', align: 'center', containScroll: false, duration: 35 
   });
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
-    const centerIndex = emblaApi.selectedScrollSnap();
-    setActiveIndex(centerIndex);
-    
-    const newValue = values[centerIndex];
-    if (newValue !== undefined && newValue !== value) {
-      onChange(newValue);
+    const index = emblaApi.selectedScrollSnap();
+    const newVal = steps[index];
+    if (newVal !== undefined && newVal !== value) {
+      onChange(newVal);
       window.Telegram?.WebApp?.HapticFeedback?.selectionChanged();
     }
-  }, [emblaApi, values, onChange, value]);
+  }, [emblaApi, value, onChange, steps]);
 
   useEffect(() => {
     if (emblaApi) {
-      const idx = values.indexOf(value);
-      if (idx !== -1) {
-        emblaApi.scrollTo(idx, true);
-        setActiveIndex(idx);
-      }
       emblaApi.on('select', onSelect);
-      return () => emblaApi.off('select', onSelect);
+      const startIdx = steps.indexOf(value);
+      if (startIdx !== -1) emblaApi.scrollTo(startIdx, true);
     }
-  }, [emblaApi, range]);
+  }, [emblaApi, steps, value, onSelect]);
 
   return (
-    <div className="relative mask-edges w-full py-2 overflow-hidden">
+    <div className="relative w-full overflow-hidden mask-edges pt-1 pb-[10px]">
       <div ref={emblaRef}>
-        <div className="flex touch-pan-y items-center h-16">
-          {values.map((v, i) => (
-            <div 
-              key={i} 
-              className="flex-[0_0_20%] flex justify-center items-center cursor-pointer" 
-              onClick={() => emblaApi?.scrollTo(i, false)}
-            >
-              <span className={`transition-all duration-300 tracking-tighter select-none ${i === activeIndex ? 'text-[42px] font-black text-black' : 'text-[24px] font-bold text-gray-400'}`}>
+        <div className="flex items-center h-16">
+          {steps.map((v, i) => (
+            <div key={i} className="flex-[0_0_20%] shrink-0 flex justify-center items-center cursor-pointer" onClick={() => emblaApi?.scrollTo(i)}>
+              <span className={`transition-all duration-300 font-black select-none ${v === value ? 'text-[42px] text-black' : 'text-[24px] text-gray-300'}`}>
                 {v}
               </span>
             </div>
           ))}
         </div>
       </div>
-      {/* Точка теперь на -bottom-0 (была -bottom-2) */}
-      <div className="absolute left-1/2 -translate-x-1/2 -bottom-0 text-[#D2D238] text-[24px] leading-none select-none pointer-events-none">
-        •
-      </div>
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-0 text-[#D2D238] text-[28px] font-bold leading-none select-none pointer-events-none">•</div>
     </div>
   );
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('tops');
-  const [userPhoto, setUserPhoto] = useState(null);
+  const tabs = ['tops', 'bottoms', 'shoes'];
+  const [activeTab, setActiveTab] = useState('tops'); 
+  const [[currentIndex, direction], setDirection] = useState([0, 0]); 
+  const [gender] = useState('male');
   
   const [sizes, setSizes] = useState(() => {
-    const saved = localStorage.getItem('user_sizes');
-    return saved ? JSON.parse(saved) : { tops: 60, bottoms: 60, shoes: 27.5 };
+    const saved = localStorage.getItem('size_app_values');
+    return saved ? JSON.parse(saved) : { tops: 60, bottoms: 60, shoes: 28.0 };
   });
 
   useEffect(() => {
-    localStorage.setItem('user_sizes', JSON.stringify(sizes));
+    localStorage.setItem('size_app_values', JSON.stringify(sizes));
   }, [sizes]);
 
   useEffect(() => {
@@ -109,69 +73,98 @@ export default function App() {
       tg.ready();
       tg.expand();
       tg.setHeaderColor('#D2D238');
-      const user = tg.initDataUnsafe?.user;
-      if (user?.photo_url) setUserPhoto(user.photo_url);
     }
   }, []);
 
-  const currentCategory = sizeDatabase.categories[activeTab];
+  const handleTabChange = (newTab) => {
+    const newIdx = tabs.indexOf(newTab);
+    const oldIdx = tabs.indexOf(activeTab);
+    if (newIdx === oldIdx) return;
+    setDirection([newIdx, newIdx > oldIdx ? 1 : -1]);
+    setActiveTab(newTab);
+    window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+  };
+
+  const currentCategory = sizeDatabase[activeTab];
+
+  const variants = {
+    enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
+  };
 
   return (
-    <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative selection:bg-transparent overflow-x-hidden pt-0">
-      
-      <div className="bg-[#D2D238] pb-11 px-5 relative shrink-0 pt-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-white/20 rounded-full overflow-hidden border-2 border-black/5 flex-shrink-0">
-            <img 
-              src={userPhoto || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
-              alt="avatar" 
-              className="w-full h-full object-cover scale-110" 
+    <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
+      <div className="flex-1 flex flex-col pt-4">
+        
+        <div className="px-5 mb-8 flex gap-2 shrink-0">
+          <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
+            <motion.div 
+              className="absolute top-1 bottom-1 bg-black rounded-full"
+              animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }}
+              transition={{ type: "spring", stiffness: 400, damping: 35 }}
             />
-          </div>
-          <div className="flex-1 bg-black/10 rounded-full flex p-1 h-10">
-            {['tops', 'bottoms', 'shoes'].map((tab) => (
-              <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 text-[14px] font-black rounded-full transition-all ${activeTab === tab ? 'bg-black text-[#D2D238]' : 'text-black/30'}`}>
-                {tab === 'tops' ? 'Верх' : tab === 'bottoms' ? 'Низ' : 'Обувь'}
+            {tabs.map((tab) => (
+              <button key={tab} onClick={() => handleTabChange(tab)} className={`flex-1 z-10 text-[14px] font-black transition-colors duration-300 ${activeTab === tab ? 'text-[#D2D238]' : 'text-black/40'}`}>
+                {tab === 'tops' ? 'Грудь' : tab === 'bottoms' ? 'Талия' : 'Стопа'}
               </button>
             ))}
           </div>
-        </div>
-      </div>
-
-      <div className="bg-[#F2F2F7] -mt-6 rounded-t-[32px] relative z-10 flex-1 pt-8 px-4 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-        
-        <div className="mb-6">
-          <p className="text-center text-[13px] font-black text-black/30 mb-1 uppercase tracking-widest leading-none">
-            {currentCategory.parameter_name}
-          </p>
-          <RulerPicker 
-            key={activeTab}
-            value={sizes[activeTab]} 
-            onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))}
-            range={currentCategory.range}
-          />
+          <button onClick={() => window.Telegram?.WebApp?.showAlert('Здесь будет инфо о замерах!')} className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
         </div>
 
-        <div className="space-y-3">
-          {currentCategory.brands.map((brand, idx) => {
-            const size = findNearestSize(brand.sizes, currentCategory.param_key, sizes[activeTab]);
-            return (
-              <div key={idx} className="bg-white rounded-[32px] p-5 flex items-center shadow-sm active:scale-[0.98] transition-transform">
-                <div className="w-16 h-16 bg-[#D1D1D6] rounded-full flex items-center justify-center mr-5 shrink-0">
-                  <img src={brand.logo} className="w-9 h-9 object-contain brightness-0 invert" alt="logo" />
-                </div>
-                <div className="flex-1 flex justify-between pr-2">
-                  <div className="text-center"><div className="text-[28px] font-black text-gray-800 tracking-tighter leading-none">{size.int}</div><div className="text-[11px] font-black text-gray-300">INT</div></div>
-                  <div className="text-center"><div className="text-[28px] font-black text-gray-800 tracking-tighter leading-none">{size.us}</div><div className="text-[11px] font-black text-gray-300">US</div></div>
-                  <div className="text-center"><div className="text-[28px] font-black text-gray-800 tracking-tighter leading-none">{size.eu}</div><div className="text-[11px] font-black text-gray-300">EU</div></div>
-                </div>
-                <div className="text-gray-200 pl-2">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className="flex-1 bg-[#F2F2F7] rounded-t-[32px] pt-8 px-4 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
+          <div className="mb-[18px] relative z-10 shrink-0">
+            <p className="text-center text-[13px] font-black text-black/30 mb-0 uppercase tracking-widest leading-none">
+              {currentCategory.title}
+            </p>
+            <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
+          </div>
+
+          <div className="relative flex-1 overflow-hidden">
+            <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <motion.div key={activeTab} custom={direction} variants={variants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} className="space-y-3 overflow-y-auto pb-10 scrollbar-hide absolute inset-0">
+                {currentCategory.brands.map((brand, idx) => {
+                  if (activeTab === 'shoes') {
+                    const size = findNearestShoe(gender, sizes.shoes);
+                    return (
+                      <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
+                        <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
+                          <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
+                        </div>
+                        <div className="flex-1 flex justify-around pr-4 text-center">
+                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.eu}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div></div>
+                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.us}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div></div>
+                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.uk}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Uk</div></div>
+                        </div>
+                      </div>
+                    );
+                  } else {
+                    const size = findNearestClothes(brand.sizes, currentCategory.key, sizes[activeTab]);
+                    return (
+                      <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
+                        <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
+                          <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
+                        </div>
+                        <div className="flex-1 flex justify-around pr-4 text-center">
+                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.int}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Int</div></div>
+                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.us}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div></div>
+                          <div><div className="text-[24px] font-black text-black/70 leading-none">{size.eu}</div><div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div></div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
