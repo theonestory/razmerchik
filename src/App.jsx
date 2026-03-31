@@ -185,8 +185,8 @@ export default function App() {
                         <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
-                        {/* ИЗМЕНЕНИЕ: Жесткая сетка для центровки flex-1 на каждую колонку */}
-                        <div className="flex-1 flex pr-2">
+                        {/* ОПТИЧЕСКОЕ ВЫРАВНИВАНИЕ: добавлен mt-[3px] */}
+                        <div className="flex-1 flex pr-2 mt-[3px]">
                           <div className="flex-1 flex flex-col items-center">
                             <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
@@ -229,8 +229,8 @@ export default function App() {
                         <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
-                        {/* ИЗМЕНЕНИЕ: Жесткая сетка для центровки flex-1 на каждую колонку */}
-                        <div className="flex-1 flex pr-2">
+                        {/* ОПТИЧЕСКОЕ ВЫРАВНИВАНИЕ: добавлен mt-[3px] */}
+                        <div className="flex-1 flex pr-2 mt-[3px]">
                           <div className="flex-1 flex flex-col items-center">
                             <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
