@@ -22,7 +22,7 @@ export const shoeDataISO = {
 };
 
 // ==========================================
-// ЛОГОТИПЫ БРЕНДОВ (ОТНОСИТЕЛЬНЫЕ ПУТИ - БЕЗ СЛЭША)
+// ЛОГОТИПЫ БРЕНДОВ
 // ==========================================
 const LOGO_COLUMBIA = "logos/columbia.svg";
 const LOGO_HM = "logos/h-m.svg";
@@ -37,7 +37,7 @@ const LOGO_CONVERSE = "logos/converse.svg";
 const LOGO_CROCS = "logos/crocs.svg";
 const LOGO_HH = "logos/helly-hansen.svg";
 const LOGO_HOLLISTER = "logos/hollister.svg";
-const LOGO_CARHARTT = "logos/carhartt.svg";
+const LOGO_CARHARTT = "logos/carhartt.svg"; // Перепроверь, чтобы файл назывался именно так
 const LOGO_UNIQLO = "logos/uniqlo.svg";
 const LOGO_F21 = "logos/forever-21.svg";
 const LOGO_UGG = "logos/ugg.svg";
@@ -61,15 +61,18 @@ const LOGO_DKNY = "logos/dkny.svg";
 const LOGO_DRMARTENS = "logos/dr-martens.svg";
 const LOGO_ECCO = "logos/ecco.svg";
 
-// --- ТАБЛИЦЫ РАЗМЕРОВ ---
+// --- ТАБЛИЦЫ РАЗМЕРОВ (УПРОЩЕННЫЕ ДЛЯ ВЕРСТКИ) ---
 const colTopsM = [{ half_chest: 42.5, int: "XS", us: "34", eu: "44" }, { half_chest: 46.5, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 const colBotM = [{ half_waist: 35.0, int: "XS", us: "28", eu: "38" }, { half_waist: 38.5, int: "S", us: "32", eu: "42" }, { half_waist: 42.5, int: "M", us: "34", eu: "44" }, { half_waist: 47.5, int: "L", us: "36", eu: "46" }, { half_waist: 52.5, int: "XL", us: "40", eu: "50" }, { half_waist: 57.5, int: "2XL", us: "44", eu: "54" }, { half_waist: 62.5, int: "3XL", us: "48", eu: "58" }];
-const nbTopsM = [{ half_chest: 45.0, int: "S", us: "36-38", eu: "46" }, { half_chest: 49.0, int: "M", us: "39-41", eu: "48" }, { half_chest: 54.0, int: "L", us: "42-44", eu: "52" }, { half_chest: 59.0, int: "XL", us: "45-47", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "48-50", eu: "60" }, { half_chest: 70.0, int: "3XL", us: "51-53", eu: "64" }];
-const nbBotM = [{ half_waist: 37.0, int: "S", us: "29-31", eu: "44-46" }, { half_waist: 41.0, int: "M", us: "32-34", eu: "48-50" }, { half_waist: 46.0, int: "L", us: "35-38", eu: "52-54" }, { half_waist: 51.0, int: "XL", us: "39-42", eu: "56-58" }, { half_waist: 56.0, int: "2XL", us: "43-46", eu: "60-62" }];
+
+// NB: Убрали диапазоны (было 32-34 -> стало 33), чтобы не ломать карточку
+const nbTopsM = [{ half_chest: 45.0, int: "S", us: "37", eu: "46" }, { half_chest: 49.0, int: "M", us: "40", eu: "48" }, { half_chest: 54.0, int: "L", us: "43", eu: "52" }, { half_chest: 59.0, int: "XL", us: "46", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "49", eu: "60" }, { half_chest: 70.0, int: "3XL", us: "52", eu: "64" }];
+const nbBotM = [{ half_waist: 37.0, int: "S", us: "30", eu: "45" }, { half_waist: 41.0, int: "M", us: "33", eu: "49" }, { half_waist: 46.0, int: "L", us: "36", eu: "53" }, { half_waist: 51.0, int: "XL", us: "40", eu: "57" }, { half_waist: 56.0, int: "2XL", us: "44", eu: "61" }];
+
 const nikTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 59.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 
 // ==========================================
-// СБОРКА БАЗЫ ДАННЫХ (36 БРЕНДОВ)
+// СБОРКА БАЗЫ ДАННЫХ
 // ==========================================
 export const sizeDatabase = {
   tops: {
@@ -85,6 +88,7 @@ export const sizeDatabase = {
       { name: "The North Face", logo: LOGO_TNF, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Fila", logo: LOGO_FILA, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Converse", logo: LOGO_CONVERSE, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Crocs", logo: LOGO_CROCS, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Helly Hansen", logo: LOGO_HH, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Hollister", logo: LOGO_HOLLISTER, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Carhartt", logo: LOGO_CARHARTT, sizes: { male: nikTopsM, female: nikTopsM } },
