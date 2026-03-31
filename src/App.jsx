@@ -91,7 +91,6 @@ export default function App() {
     window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
   };
 
-  // ИДЕАЛЬНЫЙ СКРОЛЛ: Чувствительность настроена так, чтобы не было "дребезга"
   const handleScroll = (e) => {
     const scrollTop = e.target.scrollTop;
     if (scrollTop > 30 && !isScrolled) {
@@ -142,10 +141,10 @@ export default function App() {
           </button>
         </div>
 
-        {/* ГЛАВНАЯ СЕРАЯ ОБЛАСТЬ (Теперь это контейнер для слоев) */}
+        {/* ГЛАВНАЯ СЕРАЯ ОБЛАСТЬ */}
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
           
-          {/* СЛОЙ 1: ПЛАВАЮЩАЯ ШАПКА (Нативный Apple-style fade) */}
+          {/* СЛОЙ 1: ПЛАВАЮЩАЯ ШАПКА */}
           <motion.div 
             initial={false}
             animate={{ 
@@ -154,9 +153,8 @@ export default function App() {
               y: isScrolled ? -20 : 0,
               pointerEvents: isScrolled ? 'none' : 'auto'
             }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Очень мягкая кривая iOS
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
             style={{ transformOrigin: 'top center' }}
-            // Добавлен градиент, чтобы карточки красиво исчезали под шапкой
             className="absolute top-0 left-0 right-0 z-20 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent"
           >
             <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">
@@ -165,7 +163,7 @@ export default function App() {
             <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
           </motion.div>
 
-          {/* СЛОЙ 2: СКРОЛЛ КАРТОЧЕК (Независимый, без прыжков) */}
+          {/* СЛОЙ 2: СКРОЛЛ КАРТОЧЕК */}
           <div className="absolute inset-0 z-10">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
@@ -177,7 +175,6 @@ export default function App() {
                 exit="exit" 
                 transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} 
                 onScroll={handleScroll}
-                // pt-[155px] делает так, что карточки всегда начинают рендериться четко ПОД рулеткой
                 className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3"
               >
                 {currentCategory.brands.map((brand, idx) => {
@@ -188,40 +185,40 @@ export default function App() {
                         <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
-                        <div className="flex-1 flex justify-around pr-4 text-center">
-                          <div className="flex flex-col items-center">
-                            <div className="relative h-[24px] flex justify-center items-center">
+                        {/* ИЗМЕНЕНИЕ: Жесткая сетка для центровки flex-1 на каждую колонку */}
+                        <div className="flex-1 flex pr-2">
+                          <div className="flex-1 flex flex-col items-center">
+                            <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
-                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
                                   {size.eu}
                                 </motion.div>
                               </AnimatePresence>
                             </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Eu</div>
                           </div>
 
-                          <div className="flex flex-col items-center">
-                            <div className="relative h-[24px] flex justify-center items-center">
+                          <div className="flex-1 flex flex-col items-center">
+                            <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
-                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
                                   {size.us}
                                 </motion.div>
                               </AnimatePresence>
                             </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Us</div>
                           </div>
 
-                          <div className="flex flex-col items-center">
-                            <div className="relative h-[24px] flex justify-center items-center">
+                          <div className="flex-1 flex flex-col items-center">
+                            <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
-                                <motion.div key={size.uk} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                <motion.div key={size.uk} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
                                   {size.uk}
                                 </motion.div>
                               </AnimatePresence>
                             </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Uk</div>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Uk</div>
                           </div>
-
                         </div>
                       </div>
                     );
@@ -232,40 +229,40 @@ export default function App() {
                         <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
-                        <div className="flex-1 flex justify-around pr-4 text-center">
-                          <div className="flex flex-col items-center">
-                            <div className="relative h-[24px] flex justify-center items-center">
+                        {/* ИЗМЕНЕНИЕ: Жесткая сетка для центровки flex-1 на каждую колонку */}
+                        <div className="flex-1 flex pr-2">
+                          <div className="flex-1 flex flex-col items-center">
+                            <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
-                                <motion.div key={size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                <motion.div key={size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
                                   {size.int}
                                 </motion.div>
                               </AnimatePresence>
                             </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Int</div>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Int</div>
                           </div>
 
-                          <div className="flex flex-col items-center">
-                            <div className="relative h-[24px] flex justify-center items-center">
+                          <div className="flex-1 flex flex-col items-center">
+                            <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
-                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
                                   {size.us}
                                 </motion.div>
                               </AnimatePresence>
                             </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Us</div>
                           </div>
 
-                          <div className="flex flex-col items-center">
-                            <div className="relative h-[24px] flex justify-center items-center">
+                          <div className="flex-1 flex flex-col items-center">
+                            <div className="relative h-[24px] w-full flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
-                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">
+                                <motion.div key={size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none text-center">
                                   {size.eu}
                                 </motion.div>
                               </AnimatePresence>
                             </div>
-                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Eu</div>
+                            <div className="text-[11px] font-bold text-black/20 uppercase mt-1 text-center">Eu</div>
                           </div>
-
                         </div>
                       </div>
                     );
