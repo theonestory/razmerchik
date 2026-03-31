@@ -93,10 +93,12 @@ export default function App() {
     else if (scrollTop <= 10 && isScrolled) setIsScrolled(false);
   };
 
-  // --- БРОНЕБОЙНЫЙ ШЕРИНГ ЧЕРЕЗ ССЫЛКУ ---
+  // ВЧЕРАШНИЙ РАБОЧИЙ ШАРИНГ
   const handleShare = (e, brandName, sizeData) => {
-    e.preventDefault();
-    e.stopPropagation(); // Защита от перехвата клика каруселью
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
 
     const currentValue = sizes[activeTab];
     let mText = ""; let emoji = ""; let sText = "";
@@ -114,14 +116,9 @@ export default function App() {
 
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sizeText}\n\nhttps://t.me/i_know_my_size_bot`;
     
-    // Используем прямую ссылку шэринга. Telegram сам откроет выбор чата.
-    const shareUrl = `https://t.me/share/url?text=${encodeURIComponent(message)}`;
-    
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
-        window.Telegram.WebApp.openTelegramLink(shareUrl);
-    } else {
-        window.open(shareUrl, '_blank');
+        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
     }
   };
 
@@ -132,7 +129,8 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        <div className="px-5 mb-5 flex gap-2 shrink-0 z-30">
+        {/* НАВИГАЦИЯ (Всегда сверху) */}
+        <div className="px-5 mb-5 flex gap-2 shrink-0 z-50">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
             {tabs.map((tab) => (
@@ -148,19 +146,32 @@ export default function App() {
           </button>
         </div>
 
+        {/* ОСНОВНОЙ КОНТЕЙНЕР */}
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-          <motion.div animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0, pointerEvents: isScrolled ? 'none' : 'auto' }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} className="absolute top-0 left-0 right-0 z-20 pt-8 px-4 pb-6 bg-gradient-to-b from-[#F2F2F7] via-[#F2F2F7] to-transparent">
-            <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
-            <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
-          </motion.div>
+          
+          {/* СЛОЙ 1: РУЛЕТКА (Нижний слой по твоей идее) */}
+          <div className="absolute top-0 left-0 right-0 z-10 pt-8 px-4 pb-6 pointer-events-auto">
+            <motion.div 
+                animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+                <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
+                <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
+            </motion.div>
+          </div>
 
-          <div className="absolute inset-0 z-10">
+          {/* СЛОЙ 2: КАРТОЧКИ (Верхний слой) */}
+          <div className="absolute inset-0 z-20 pointer-events-none">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
-              <motion.div key={activeTab} onScroll={handleScroll} className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3">
+              <motion.div 
+                key={activeTab} 
+                onScroll={handleScroll}
+                className="absolute inset-0 overflow-y-auto scrollbar-hide px-4 pt-[155px] pb-10 space-y-3 pointer-events-auto"
+              >
                 {currentCategory.brands.map((brand, idx) => {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
-                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative overflow-hidden">
+                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative">
                       <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden p-2">
                         <img src={brand.logo} className="w-full h-full object-contain" alt="logo" />
                       </div>
@@ -191,10 +202,10 @@ export default function App() {
                         </div>
                       </div>
                       
-                      {/* КНОПКА SHARE: opacity 40%, увеличен хитбокс, стоп-событие */}
+                      {/* КНОПКА SHARE: 40% прозрачность, чистая иконка, вчерашний метод */}
                       <button 
                         onClick={(e) => handleShare(e, brand.name, size)} 
-                        className="p-5 -mr-4 text-[#838383] opacity-40 active:opacity-100 active:scale-110 transition-all shrink-0 relative z-50 pointer-events-auto"
+                        className="p-3 -mr-1 text-[#838383] opacity-40 active:opacity-100 transition-opacity shrink-0 cursor-pointer"
                       >
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
