@@ -62,6 +62,9 @@ export default function App() {
   
   const [gender] = useState('male');
   
+  // СОСТОЯНИЕ ДЛЯ СКРОЛЛА
+  const [isScrolled, setIsScrolled] = useState(false);
+  
   const [sizes, setSizes] = useState(() => {
     const saved = localStorage.getItem('size_app_values');
     return saved ? JSON.parse(saved) : { tops: 45, bottoms: 35, shoes: 28.0 };
@@ -86,7 +89,18 @@ export default function App() {
     if (newIdx === oldIdx) return;
     setDirection([newIdx, newIdx > oldIdx ? 1 : -1]);
     setActiveTab(newTab);
+    setIsScrolled(false); // Разворачиваем рулетку при смене вкладки
     window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+  };
+
+  // ОБРАБОТЧИК СКРОЛЛА КАРТОЧЕК
+  const handleScroll = (e) => {
+    const scrollTop = e.target.scrollTop;
+    if (scrollTop > 20 && !isScrolled) {
+      setIsScrolled(true);
+    } else if (scrollTop <= 20 && isScrolled) {
+      setIsScrolled(false);
+    }
   };
 
   const currentCategory = sizeDatabase[activeTab];
@@ -97,7 +111,6 @@ export default function App() {
     exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
   };
 
-  // ЭФФЕКТ ДЛЯ ЦИФР (С легким движением для большей красоты)
   const fadeVariants = {
     initial: { opacity: 0, y: 8 },
     animate: { opacity: 1, y: 0 },
@@ -108,7 +121,6 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* ИЗМЕНЕНО: mb-8 заменено на mb-5 для уменьшения отступа */}
         <div className="px-5 mb-5 flex gap-2 shrink-0">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div 
@@ -132,16 +144,37 @@ export default function App() {
         </div>
 
         <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className="flex-1 bg-[#F2F2F7] rounded-t-[32px] pt-8 px-4 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
-          <div className="mb-[18px] relative z-10 shrink-0">
+          
+          {/* ОБЕРТКА РУЛЕТКИ ДЛЯ СКРЫТИЯ ПРИ СКРОЛЛЕ */}
+          <motion.div 
+            animate={{ 
+              height: isScrolled ? 0 : 'auto', 
+              opacity: isScrolled ? 0 : 1,
+              marginBottom: isScrolled ? 0 : 18
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="relative z-10 shrink-0 overflow-hidden"
+          >
             <p className="text-center text-[13px] font-black text-black/30 mb-0 uppercase tracking-widest leading-none">
               {currentCategory.title}
             </p>
             <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
-          </div>
+          </motion.div>
 
           <div className="relative flex-1 overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
-              <motion.div key={activeTab} custom={direction} variants={cardVariants} initial="enter" animate="center" exit="exit" transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} className="space-y-3 overflow-y-auto pb-10 scrollbar-hide absolute inset-0">
+              {/* ДОБАВЛЕН onScroll СЮДА */}
+              <motion.div 
+                key={activeTab} 
+                custom={direction} 
+                variants={cardVariants} 
+                initial="enter" 
+                animate="center" 
+                exit="exit" 
+                transition={{ x: { type: "spring", stiffness: 350, damping: 35 }, opacity: { duration: 0.15 } }} 
+                onScroll={handleScroll}
+                className="space-y-3 overflow-y-auto pb-10 scrollbar-hide absolute inset-0"
+              >
                 {currentCategory.brands.map((brand, idx) => {
                   if (activeTab === 'shoes') {
                     const size = findNearestShoe(gender, sizes.shoes);
@@ -151,8 +184,6 @@ export default function App() {
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
                         <div className="flex-1 flex justify-around pr-4 text-center">
-                          
-                          {/* ИЗМЕНЕНО: Добавлен контейнер h-[24px] и цвет #838383 */}
                           <div className="flex flex-col items-center">
                             <div className="relative h-[24px] flex justify-center items-center">
                               <AnimatePresence mode="popLayout">
@@ -197,8 +228,6 @@ export default function App() {
                           <img src={brand.logo} className="w-8 h-8 object-contain brightness-0 invert" alt="logo" />
                         </div>
                         <div className="flex-1 flex justify-around pr-4 text-center">
-                          
-                          {/* ИЗМЕНЕНО: Добавлен контейнер h-[24px] и цвет #838383 */}
                           <div className="flex flex-col items-center">
                             <div className="relative h-[24px] flex justify-center items-center">
                               <AnimatePresence mode="popLayout">

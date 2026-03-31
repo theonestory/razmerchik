@@ -22,12 +22,12 @@ export const shoeDataISO = {
 // ==========================================
 // ЛОГОТИПЫ БРЕНДОВ
 // ==========================================
-const LOGO_COLUMBIA = "https://upload.wikimedia.org/wikipedia/commons/2/23/Columbia_Sportswear_logo.svg";
-const LOGO_HM = "https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg";
-const LOGO_LEVIS = "https://upload.wikimedia.org/wikipedia/commons/1/11/Levi%27s_logo.svg";
-const LOGO_NIKE = "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg";
-const LOGO_ADIDAS = "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg";
-const LOGO_PUMA = "https://upload.wikimedia.org/wikipedia/commons/a/a1/Puma_Logo.svg";
+const LOGO_COLUMBIA = "https://cdn.worldvectorlogo.com/logos/columbia-sportswear.svg";
+const LOGO_HM = "https://cdn.worldvectorlogo.com/logos/h-m.svg";
+const LOGO_LEVIS = "https://cdn.worldvectorlogo.com/logos/levi-s-logo.svg";
+const LOGO_NIKE = "https://cdn.worldvectorlogo.com/logos/nike-11.svg";
+const LOGO_ADIDAS = "https://cdn.worldvectorlogo.com/logos/adidas-4.svg";
+const LOGO_PUMA = "https://cdn.worldvectorlogo.com/logos/puma-logo.svg";
 
 // ==========================================
 // БРЕНД 1: COLUMBIA
