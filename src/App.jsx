@@ -52,12 +52,14 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   );
 };
 
+// --- ЭКРАН ИНФО (ЧИСТАЯ ШАПКА, БЕЗ НАДПИСИ) ---
 const InfoScreen = ({ onClose }) => (
   <motion.div 
     initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} 
-    transition={{ type: "spring", damping: 32, stiffness: 320 }}
+    transition={{ type: "spring", damping: 30, stiffness: 300 }}
     className="absolute inset-0 bg-[#F2F2F7] z-[100] flex flex-col overflow-hidden"
   >
+    {/* Чисто белая шапка — только кнопка "закрыть" */}
     <div className="p-5 flex items-center bg-white border-b border-black/5 shadow-sm shrink-0">
       <button onClick={onClose} className="flex items-center gap-2 active:opacity-50 transition-opacity">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -66,40 +68,40 @@ const InfoScreen = ({ onClose }) => (
         </svg>
         <span className="text-[14px] font-bold text-black uppercase tracking-tight">закрыть</span>
       </button>
-      <h2 className="flex-1 text-center text-[19px] font-black uppercase italic tracking-tighter pr-[85px] text-black/80">Инфо</h2>
+      {/* Надпись ИНФО убрана */}
     </div>
     
     <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 scrollbar-hide pb-20">
       <section>
         <h3 className="text-black bg-white border-2 border-black inline-block px-2 py-1 text-sm font-black uppercase mb-3 italic">О приложении</h3>
-        <p className="text-black/70 leading-relaxed font-bold">
-          «Размерчик» — карманный помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов. При выборе личных параметров отобразится подходящий размер в сетке бренда.
+        <p className="text-black/70 leading-relaxed font-bold italic">
+          «Размерчик» — карманный помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов. При выборе параметров отобразится наиболее подходящий размер в сетке конкретного бренда.
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👕 Как измерить полуобхват груди</h3>
-        <p className="text-black/70 leading-relaxed font-bold">
-          Необходимо взять вещь, которая сидит идеально, положить её на ровную поверхность и измерь расстояние от одной подмышки до другой. Это и есть «полуобхват груди».
+        <p className="text-black/70 leading-relaxed font-bold italic">
+          Необходимо взять вещь, которая сидит идеально, положить её на ровную поверхность и измерить расстояние от одной подмышки до другой. Это и есть «полуобхват груди».
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👖 Как измерить полуобхват талии</h3>
-        <p className="text-black/70 leading-relaxed font-bold">
+        <p className="text-black/70 leading-relaxed font-bold italic">
           Замеряется пояс удобных джинсов или брюк от края до края. Вещь должна лежать ровно, без натяжения. Это значение поможет выбрать идеальный низ.
         </p>
       </section>
 
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1">👟 Как измерить стопу (стельку)</h3>
-        <p className="text-black/70 leading-relaxed font-bold">
-          Нужно поставить ногу на лист бумаги и обвести её. Расстояние от пятки до кончика большого пальца — это длина стопы в сантиметрах.
+        <p className="text-black/70 leading-relaxed font-bold italic">
+          Нужно поставить ногу на лист бумаги и обведи её. Расстояние от пятки до кончика большого пальца — это длина стопы в сантиметрах.
         </p>
       </section>
 
       <section className="bg-black/5 p-4 rounded-2xl border-l-4 border-black">
-        <h3 className="text-black text-sm font-black uppercase mb-2">⚠️ Важное</h3>
+        <h3 className="text-black text-sm font-black uppercase mb-2 italic">⚠️ Важное</h3>
         <p className="text-black/60 text-sm leading-relaxed font-bold italic mb-4">
           Китайские подделки и реплики часто «маломерят» на 1-2 размера относительно оригинальных сеток. 
         </p>
@@ -108,7 +110,7 @@ const InfoScreen = ({ onClose }) => (
         </p>
       </section>
       
-      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest">Размерчик v1.2</div>
+      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest italic text-black">Размерчик v1.2</div>
     </div>
   </motion.div>
 );
@@ -126,11 +128,17 @@ export default function App() {
     return saved ? JSON.parse(saved) : { tops: 45, bottoms: 35, shoes: 28.0 };
   });
 
-  useEffect(() => { localStorage.setItem('size_app_values', JSON.stringify(sizes)); }, [sizes]);
+  useEffect(() => {
+    localStorage.setItem('size_app_values', JSON.stringify(sizes));
+  }, [sizes]);
 
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
-    if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#D2D238'); }
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.setHeaderColor('#D2D238');
+    }
   }, []);
 
   const handleTabChange = (newTab) => {
@@ -154,13 +162,24 @@ export default function App() {
     let mText = activeTab === 'tops' ? `полуобхвата груди (${currentValue} см)` : activeTab === 'bottoms' ? `полуобхвата талии (${currentValue} см)` : `стельки (${currentValue} см)`;
     let emoji = activeTab === 'tops' ? "👕" : activeTab === 'bottoms' ? "👖" : "👟";
     let sText = activeTab === 'shoes' ? `EU: ${sizeData.eu}, US: ${sizeData.us}, UK: ${sizeData.uk}` : `Международный: ${sizeData.int}, US: ${sizeData.us}, EU: ${sizeData.eu}`;
+
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sText}\n\nhttps://t.me/i_know_my_size_bot`;
     const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
-    if (window.Telegram?.WebApp) { window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success'); window.Telegram.WebApp.openTelegramLink(shareUrl); } else { window.open(shareUrl, '_blank'); }
+    
+    if (window.Telegram?.WebApp) {
+      window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
+      window.Telegram.WebApp.openTelegramLink(shareUrl);
+    } else {
+      window.open(shareUrl, '_blank');
+    }
   };
 
   const currentCategory = sizeDatabase[activeTab];
-  const cardVariants = { enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }), center: { x: 0, opacity: 1 }, exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 }) };
+  const cardVariants = {
+    enter: (direction) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (direction) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
+  };
   const fadeVariants = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -8 } };
 
   return (
@@ -183,7 +202,7 @@ export default function App() {
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden">
           <div className={`absolute top-0 left-0 right-0 z-30 pt-8 px-4 pb-6 h-[155px] pointer-events-none`}>
             <motion.div animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }} transition={{ duration: 0.4 }} className={`${isScrolled ? 'pointer-events-none' : 'pointer-events-auto'}`}>
-                <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none">{currentCategory.title}</p>
+                <p className="text-center text-[13px] font-black text-black/30 mb-[18px] uppercase tracking-widest leading-none italic">{currentCategory.title}</p>
                 <RulerPicker key={activeTab} value={sizes[activeTab]} onChange={(val) => setSizes(prev => ({...prev, [activeTab]: val}))} min={currentCategory.range.min} max={currentCategory.range.max} step={currentCategory.range.step} />
             </motion.div>
           </div>
@@ -202,21 +221,15 @@ export default function App() {
                       </div>
                       <div className="flex-1 flex pr-2 mt-[3px]">
                         <div className="flex-1 flex flex-col items-center">
-                          <AnimatePresence mode="popLayout">
-                            <motion.div key={activeTab === 'shoes' ? size.eu : size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.eu : size.int}</motion.div>
-                          </AnimatePresence>
+                          <AnimatePresence mode="popLayout"><motion.div key={activeTab === 'shoes' ? size.eu : size.int} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.eu : size.int}</motion.div></AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Eu' : 'Int'}</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center">
-                          <AnimatePresence mode="popLayout">
-                            <motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{size.us}</motion.div>
-                          </AnimatePresence>
+                          <AnimatePresence mode="popLayout"><motion.div key={size.us} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{size.us}</motion.div></AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">Us</div>
                         </div>
                         <div className="flex-1 flex flex-col items-center">
-                          <AnimatePresence mode="popLayout">
-                            <motion.div key={activeTab === 'shoes' ? size.uk : size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.uk : size.eu}</motion.div>
-                          </AnimatePresence>
+                          <AnimatePresence mode="popLayout"><motion.div key={activeTab === 'shoes' ? size.uk : size.eu} variants={fadeVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="text-[24px] font-black text-[#838383] leading-none">{activeTab === 'shoes' ? size.uk : size.eu}</motion.div></AnimatePresence>
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1">{activeTab === 'shoes' ? 'Uk' : 'Eu'}</div>
                         </div>
                       </div>
