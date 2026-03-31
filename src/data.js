@@ -22,54 +22,50 @@ export const shoeDataISO = {
 };
 
 // ==========================================
-// ЛОГОТИПЫ БРЕНДОВ (ФИНАЛЬНЫЙ СПИСОК)
+// ЛОГОТИПЫ БРЕНДОВ (ОТНОСИТЕЛЬНЫЕ ПУТИ - БЕЗ СЛЭША)
 // ==========================================
-const LOGO_COLUMBIA = "/logos/columbia.svg";
-const LOGO_HM = "/logos/h-m.svg";
-const LOGO_LEVIS = "/logos/levis.svg";
-const LOGO_NIKE = "/logos/nike.svg";
-const LOGO_NB = "/logos/new-balance.svg";
-const LOGO_ADIDAS = "/logos/adidas.svg";
-const LOGO_PUMA = "/logos/puma.svg";
-const LOGO_TNF = "/logos/the-north-face.svg";
-const LOGO_FILA = "/logos/fila.svg";
-const LOGO_CONVERSE = "/logos/converse.svg";
-const LOGO_CROCS = "/logos/crocs.svg";
-const LOGO_HH = "/logos/helly-hansen.svg";
-const LOGO_HOLLISTER = "/logos/hollister.svg";
-const LOGO_CARHARTT = "/logos/carhartt.svg";
-const LOGO_UNIQLO = "/logos/uniqlo.svg";
-const LOGO_F21 = "/logos/forever-21.svg";
-const LOGO_UGG = "/logos/ugg.svg";
-const LOGO_ZARA = "/logos/zara.svg";
-const LOGO_MANGO = "/logos/mango.svg";
-const LOGO_RL = "/logos/ralph-lauren.svg";
-const LOGO_TIMBERLAND = "/logos/timberland.svg";
-const LOGO_TH = "/logos/tommy-hilfiger.svg";
-const LOGO_CK = "/logos/calvin-klein.svg";
-const LOGO_LACOSTE = "/logos/lacoste.svg";
-const LOGO_ALPHA = "/logos/alpha-industries.svg";
-const LOGO_GAP = "/logos/gap.svg";
-const LOGO_GUCCI = "/logos/gucci.svg";
-const LOGO_PRADA = "/logos/prada.svg";
-const LOGO_GUESS = "/logos/guess.svg";
-const LOGO_MK = "/logos/michael-kors.svg";
-const LOGO_BURBERRY = "/logos/burberry.svg";
-const LOGO_UA = "/logos/under-armour.svg";
-const LOGO_BOSS = "/logos/boss.svg";
-const LOGO_DKNY = "/logos/dkny.svg";
-const LOGO_DRMARTENS = "/logos/dr-martens.svg";
-const LOGO_ECCO = "/logos/ecco.svg";
+const LOGO_COLUMBIA = "logos/columbia.svg";
+const LOGO_HM = "logos/h-m.svg";
+const LOGO_LEVIS = "logos/levis.svg";
+const LOGO_NIKE = "logos/nike.svg";
+const LOGO_NB = "logos/new-balance.svg";
+const LOGO_ADIDAS = "logos/adidas.svg";
+const LOGO_PUMA = "logos/puma.svg";
+const LOGO_TNF = "logos/the-north-face.svg";
+const LOGO_FILA = "logos/fila.svg";
+const LOGO_CONVERSE = "logos/converse.svg";
+const LOGO_CROCS = "logos/crocs.svg";
+const LOGO_HH = "logos/helly-hansen.svg";
+const LOGO_HOLLISTER = "logos/hollister.svg";
+const LOGO_CARHARTT = "logos/carhartt.svg";
+const LOGO_UNIQLO = "logos/uniqlo.svg";
+const LOGO_F21 = "logos/forever-21.svg";
+const LOGO_UGG = "logos/ugg.svg";
+const LOGO_ZARA = "logos/zara.svg";
+const LOGO_MANGO = "logos/mango.svg";
+const LOGO_RL = "logos/ralph-lauren.svg";
+const LOGO_TIMBERLAND = "logos/timberland.svg";
+const LOGO_TH = "logos/tommy-hilfiger.svg";
+const LOGO_CK = "logos/calvin-klein.svg";
+const LOGO_LACOSTE = "logos/lacoste.svg";
+const LOGO_ALPHA = "logos/alpha-industries.svg";
+const LOGO_GAP = "logos/gap.svg";
+const LOGO_GUCCI = "logos/gucci.svg";
+const LOGO_PRADA = "logos/prada.svg";
+const LOGO_GUESS = "logos/guess.svg";
+const LOGO_MK = "logos/michael-kors.svg";
+const LOGO_BURBERRY = "logos/burberry.svg";
+const LOGO_UA = "logos/under-armour.svg";
+const LOGO_BOSS = "logos/boss.svg";
+const LOGO_DKNY = "logos/dkny.svg";
+const LOGO_DRMARTENS = "logos/dr-martens.svg";
+const LOGO_ECCO = "logos/ecco.svg";
 
-// --- ТАБЛИЦЫ РАЗМЕРОВ ОДЕЖДЫ ---
+// --- ТАБЛИЦЫ РАЗМЕРОВ ---
 const colTopsM = [{ half_chest: 42.5, int: "XS", us: "34", eu: "44" }, { half_chest: 46.5, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 const colBotM = [{ half_waist: 35.0, int: "XS", us: "28", eu: "38" }, { half_waist: 38.5, int: "S", us: "32", eu: "42" }, { half_waist: 42.5, int: "M", us: "34", eu: "44" }, { half_waist: 47.5, int: "L", us: "36", eu: "46" }, { half_waist: 52.5, int: "XL", us: "40", eu: "50" }, { half_waist: 57.5, int: "2XL", us: "44", eu: "54" }, { half_waist: 62.5, int: "3XL", us: "48", eu: "58" }];
-
-// Специфические данные New Balance (Одежда)
 const nbTopsM = [{ half_chest: 45.0, int: "S", us: "36-38", eu: "46" }, { half_chest: 49.0, int: "M", us: "39-41", eu: "48" }, { half_chest: 54.0, int: "L", us: "42-44", eu: "52" }, { half_chest: 59.0, int: "XL", us: "45-47", eu: "56" }, { half_chest: 64.0, int: "2XL", us: "48-50", eu: "60" }, { half_chest: 70.0, int: "3XL", us: "51-53", eu: "64" }];
-const nbTopsF = [{ half_chest: 41.0, int: "XS", us: "0-2", eu: "32-34" }, { half_chest: 43.5, int: "S", us: "4-6", eu: "36-38" }, { half_chest: 46.0, int: "M", us: "8-10", eu: "40-42" }, { half_chest: 50.0, int: "L", us: "12-14", eu: "44-46" }, { half_chest: 54.0, int: "XL", us: "16-18", eu: "48-50" }];
 const nbBotM = [{ half_waist: 37.0, int: "S", us: "29-31", eu: "44-46" }, { half_waist: 41.0, int: "M", us: "32-34", eu: "48-50" }, { half_waist: 46.0, int: "L", us: "35-38", eu: "52-54" }, { half_waist: 51.0, int: "XL", us: "39-42", eu: "56-58" }, { half_waist: 56.0, int: "2XL", us: "43-46", eu: "60-62" }];
-
 const nikTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 59.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 
 // ==========================================
@@ -83,7 +79,7 @@ export const sizeDatabase = {
       { name: "H&M", logo: LOGO_HM, sizes: { male: colTopsM, female: colTopsM } },
       { name: "Levi's", logo: LOGO_LEVIS, sizes: { male: colTopsM, female: colTopsM } },
       { name: "Nike", logo: LOGO_NIKE, sizes: { male: nikTopsM, female: nikTopsM } },
-      { name: "New Balance", logo: LOGO_NB, sizes: { male: nbTopsM, female: nbTopsF } }, // Родные данные!
+      { name: "New Balance", logo: LOGO_NB, sizes: { male: nbTopsM, female: nbTopsM } },
       { name: "Adidas", logo: LOGO_ADIDAS, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Puma", logo: LOGO_PUMA, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "The North Face", logo: LOGO_TNF, sizes: { male: nikTopsM, female: nikTopsM } },
@@ -111,7 +107,9 @@ export const sizeDatabase = {
       { name: "Burberry", logo: LOGO_BURBERRY, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Under Armour", logo: LOGO_UA, sizes: { male: nikTopsM, female: nikTopsM } },
       { name: "Hugo Boss", logo: LOGO_BOSS, sizes: { male: nikTopsM, female: nikTopsM } },
-      { name: "DKNY", logo: LOGO_DKNY, sizes: { male: nikTopsM, female: nikTopsM } }
+      { name: "DKNY", logo: LOGO_DKNY, sizes: { male: nikTopsM, female: nikTopsM } },
+      { name: "Dr. Martens", logo: LOGO_DRMARTENS, sizes: { male: colTopsM, female: colTopsM } },
+      { name: "ECCO", logo: LOGO_ECCO, sizes: { male: colTopsM, female: colTopsM } }
     ]
   },
   bottoms: {
@@ -121,7 +119,7 @@ export const sizeDatabase = {
       { name: "H&M", logo: LOGO_HM, sizes: { male: colBotM, female: colBotM } },
       { name: "Levi's", logo: LOGO_LEVIS, sizes: { male: colBotM, female: colBotM } },
       { name: "Nike", logo: LOGO_NIKE, sizes: { male: colBotM, female: colBotM } },
-      { name: "New Balance", logo: LOGO_NB, sizes: { male: nbBotM, female: nbBotM } }, // Родные данные!
+      { name: "New Balance", logo: LOGO_NB, sizes: { male: nbBotM, female: nbBotM } },
       { name: "Adidas", logo: LOGO_ADIDAS, sizes: { male: colBotM, female: colBotM } },
       { name: "Puma", logo: LOGO_PUMA, sizes: { male: colBotM, female: colBotM } },
       { name: "The North Face", logo: LOGO_TNF, sizes: { male: colBotM, female: colBotM } },

@@ -126,7 +126,7 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
-        {/* НАВИГАЦИЯ (z-50) */}
+        {/* НАВИГАЦИЯ */}
         <div className="px-5 mb-5 flex gap-2 shrink-0 z-50">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div className="absolute top-1 bottom-1 bg-black rounded-full" animate={{ left: `calc(${tabs.indexOf(activeTab) * 33.33}% + 4px)`, width: 'calc(33.33% - 8px)' }} transition={{ type: "spring", stiffness: 400, damping: 35 }} />
@@ -140,7 +140,7 @@ export default function App() {
 
         <div className="flex-1 bg-[#F2F2F7] rounded-t-[32px] relative shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden">
           
-          {/* СЛОЙ 1: РУЛЕТКА (z-30) - Теперь выше карточек, но ограничена по высоте */}
+          {/* СЛОЙ: РУЛЕТКА */}
           <div className={`absolute top-0 left-0 right-0 z-30 pt-8 px-4 pb-6 h-[155px] pointer-events-none`}>
             <motion.div 
                 animate={{ opacity: isScrolled ? 0 : 1, scale: isScrolled ? 0.9 : 1, y: isScrolled ? -20 : 0 }}
@@ -152,7 +152,7 @@ export default function App() {
             </motion.div>
           </div>
 
-          {/* СЛОЙ 2: КАРТОЧКИ (z-20) */}
+          {/* СЛОЙ: КАРТОЧКИ */}
           <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
               <motion.div 
@@ -170,9 +170,17 @@ export default function App() {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
                     <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative">
-                      <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden p-2">
-                        <img src={brand.logo} className="w-full h-full object-contain" alt="logo" />
+                      
+                      {/* ЛОГОТИП: Теперь это чистый контейнер для твоего медальона */}
+                      <div className="w-14 h-14 mr-4 shrink-0 overflow-hidden flex items-center justify-center">
+                        <img 
+                          src={brand.logo} 
+                          className="w-full h-full object-contain" 
+                          alt={brand.name} 
+                          onError={(e) => { e.target.style.opacity = '0'; }}
+                        />
                       </div>
+
                       <div className="flex-1 flex pr-2 mt-[3px]">
                         <div className="flex-1 flex flex-col items-center">
                           <AnimatePresence mode="popLayout">
