@@ -1,5 +1,5 @@
 // ==========================================
-// БАЗА ОБУВИ (РАЗНЫЕ СЕТКИ ДЛЯ М И Ж)
+// БАЗА ОБУВИ (РАСШИРЕННАЯ ЖЕНСКАЯ СЕТКА)
 // ==========================================
 export const shoeDataISO = {
   male: [
@@ -13,11 +13,14 @@ export const shoeDataISO = {
     { cm: 31.0, eu: 49.5, us: 16, uk: 15.5 }
   ],
   female: [
-    { cm: 22.5, eu: 35.5, us: 5, uk: 2.5 }, { cm: 23.0, eu: 36, us: 5.5, uk: 3 },
-    { cm: 23.5, eu: 37, us: 6.5, uk: 4 }, { cm: 23.8, eu: 37.5, us: 7, uk: 4.5 },
-    { cm: 24.1, eu: 38, us: 7.5, uk: 5 }, { cm: 24.6, eu: 39, us: 8.5, uk: 6 },
-    { cm: 25.1, eu: 40, us: 9, uk: 6.5 }, { cm: 25.4, eu: 40.5, us: 9.5, uk: 7 },
-    { cm: 25.9, eu: 41, us: 10.5, uk: 8 }, { cm: 26.7, eu: 42.5, us: 12, uk: 9.5 }
+    { cm: 22.0, eu: 35, us: 4.5, uk: 2 }, { cm: 22.5, eu: 35.5, us: 5, uk: 2.5 }, 
+    { cm: 23.0, eu: 36, us: 5.5, uk: 3 }, { cm: 23.5, eu: 37, us: 6.5, uk: 4 }, 
+    { cm: 23.8, eu: 37.5, us: 7, uk: 4.5 }, { cm: 24.1, eu: 38, us: 7.5, uk: 5 }, 
+    { cm: 24.6, eu: 39, us: 8.5, uk: 6 }, { cm: 25.1, eu: 40, us: 9, uk: 6.5 }, 
+    { cm: 25.4, eu: 40.5, us: 9.5, uk: 7 }, { cm: 25.9, eu: 41, us: 10.5, uk: 8 }, 
+    { cm: 26.2, eu: 41.5, us: 11, uk: 8.5 }, { cm: 26.7, eu: 42, us: 11.5, uk: 9 },
+    { cm: 27.1, eu: 42.5, us: 12, uk: 9.5 }, { cm: 27.6, eu: 43, us: 12.5, uk: 10 },
+    { cm: 28.0, eu: 44, us: 13, uk: 10.5 }
   ]
 };
 
@@ -63,14 +66,38 @@ const LOGO_ECCO = "logos/ecco.svg";
 const colTopsM = [{ half_chest: 42.5, int: "XS", us: "34", eu: "44" }, { half_chest: 46.5, int: "S", us: "38", eu: "48" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 55.0, int: "L", us: "44", eu: "54" }, { half_chest: 60.0, int: "XL", us: "48", eu: "58" }, { half_chest: 65.0, int: "2XL", us: "52", eu: "62" }, { half_chest: 70.0, int: "3XL", us: "56", eu: "66" }];
 const colBotM = [{ half_waist: 35.0, int: "XS", us: "28", eu: "38" }, { half_waist: 38.5, int: "S", us: "32", eu: "42" }, { half_waist: 42.5, int: "M", us: "34", eu: "44" }, { half_waist: 47.5, int: "L", us: "36", eu: "46" }, { half_waist: 52.5, int: "XL", us: "40", eu: "50" }, { half_waist: 57.5, int: "2XL", us: "44", eu: "54" }, { half_waist: 62.5, int: "3XL", us: "48", eu: "58" }];
 
-// --- ТАБЛИЦЫ РАЗМЕРОВ (ЖЕНСКИЕ) ---
-// В женских сетках аналогичный полуобхват груди соответствует меньшему размеру в EU/US
-const colTopsF = [{ half_chest: 40.0, int: "XS", us: "2", eu: "34" }, { half_chest: 43.0, int: "S", us: "4", eu: "36" }, { half_chest: 46.0, int: "M", us: "8", eu: "40" }, { half_chest: 50.0, int: "L", us: "12", eu: "44" }, { half_chest: 54.0, int: "XL", us: "16", eu: "48" }];
-const colBotF = [{ half_waist: 32.0, int: "XS", us: "25", eu: "34" }, { half_waist: 34.0, int: "S", us: "27", eu: "36" }, { half_waist: 37.0, int: "M", us: "29", eu: "38" }, { half_waist: 40.0, int: "L", us: "31", eu: "40" }, { half_waist: 43.0, int: "XL", us: "33", eu: "42" }];
+// --- ТАБЛИЦЫ РАЗМЕРОВ (ЖЕНСКИЕ РАСШИРЕННЫЕ) ---
+const colTopsF = [
+  { half_chest: 37.0, int: "XXS", us: "0", eu: "32" },
+  { half_chest: 40.0, int: "XS", us: "2", eu: "34" },
+  { half_chest: 43.0, int: "S", us: "4", eu: "36" },
+  { half_chest: 46.0, int: "M", us: "8", eu: "40" },
+  { half_chest: 50.0, int: "L", us: "12", eu: "44" },
+  { half_chest: 54.0, int: "XL", us: "16", eu: "48" },
+  { half_chest: 59.0, int: "2XL", us: "20", eu: "52" }
+];
+const colBotF = [
+  { half_waist: 30.0, int: "XXS", us: "24", eu: "32" },
+  { half_waist: 32.0, int: "XS", us: "25", eu: "34" },
+  { half_waist: 34.5, int: "S", us: "27", eu: "36" },
+  { half_waist: 37.0, int: "M", us: "29", eu: "38" },
+  { half_waist: 40.0, int: "L", us: "31", eu: "40" },
+  { half_waist: 43.5, int: "XL", us: "33", eu: "42" },
+  { half_waist: 47.0, int: "2XL", us: "36", eu: "46" },
+  { half_waist: 51.0, int: "3XL", us: "40", eu: "50" }
+];
 
-// Специфические для Nike (пример)
+// Специфические для Nike
 const nikTopsM = [{ half_chest: 42.0, int: "XS", us: "34", eu: "42" }, { half_chest: 46.0, int: "S", us: "36", eu: "46" }, { half_chest: 50.0, int: "M", us: "40", eu: "50" }, { half_chest: 54.0, int: "L", us: "44", eu: "54" }, { half_chest: 59.0, int: "XL", us: "48", eu: "58" }];
-const nikTopsF = [{ half_chest: 38.0, int: "XS", us: "0-2", eu: "32" }, { half_chest: 41.0, int: "S", us: "4-6", eu: "34-36" }, { half_chest: 44.0, int: "M", us: "8-10", eu: "38-40" }, { half_chest: 48.0, int: "L", us: "12-14", eu: "42-44" }, { half_chest: 52.0, int: "XL", us: "16-18", eu: "46-48" }];
+const nikTopsF = [
+  { half_chest: 36.0, int: "XXS", us: "0", eu: "30" },
+  { half_chest: 38.5, int: "XS", us: "0-2", eu: "32" },
+  { half_chest: 41.5, int: "S", us: "4-6", eu: "34-36" },
+  { half_chest: 44.5, int: "M", us: "8-10", eu: "38-40" },
+  { half_chest: 48.5, int: "L", us: "12-14", eu: "42-44" },
+  { half_chest: 53.0, int: "XL", us: "16-18", eu: "46-48" },
+  { half_chest: 58.0, int: "2XL", us: "20-22", eu: "50-52" }
+];
 
 export const sizeDatabase = {
   tops: {
@@ -85,7 +112,6 @@ export const sizeDatabase = {
       { name: "Zara", logo: LOGO_ZARA, sizes: { male: colTopsM, female: colTopsF } },
       { name: "Mango", logo: LOGO_MANGO, sizes: { male: colTopsM, female: colTopsF } },
       { name: "Tommy Hilfiger", logo: LOGO_TH, sizes: { male: colTopsM, female: colTopsF } }
-      // ... при необходимости можно добавить остальные бренды
     ]
   },
   bottoms: {
