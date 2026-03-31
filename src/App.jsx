@@ -93,12 +93,10 @@ export default function App() {
     else if (scrollTop <= 10 && isScrolled) setIsScrolled(false);
   };
 
-  // --- ВЧЕРАШНИЙ РАБОЧИЙ ШАРИНГ ---
+  // --- БРОНЕБОЙНЫЙ ШЕРИНГ ЧЕРЕЗ ССЫЛКУ ---
   const handleShare = (e, brandName, sizeData) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation(); // Полная остановка всех систем, чтобы сработал только клик
-    }
+    e.preventDefault();
+    e.stopPropagation(); // Защита от перехвата клика каруселью
 
     const currentValue = sizes[activeTab];
     let mText = ""; let emoji = ""; let sText = "";
@@ -116,10 +114,14 @@ export default function App() {
 
     const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sizeText}\n\nhttps://t.me/i_know_my_size_bot`;
     
+    // Используем прямую ссылку шэринга. Telegram сам откроет выбор чата.
+    const shareUrl = `https://t.me/share/url?text=${encodeURIComponent(message)}`;
+    
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.HapticFeedback?.notificationOccurred('success');
-        // Возвращаем вчерашнюю версию параметров
-        window.Telegram.WebApp.switchInlineQuery(message, ['users', 'groups', 'channels']);
+        window.Telegram.WebApp.openTelegramLink(shareUrl);
+    } else {
+        window.open(shareUrl, '_blank');
     }
   };
 
@@ -139,12 +141,10 @@ export default function App() {
               </button>
             ))}
           </div>
-          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер!')}>
-            <div className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-            </div>
+          <button onClick={() => window.Telegram?.WebApp?.showAlert('Замеряйте себя, а мы подскажем размер!')} className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center border border-black/5 shrink-0 active:scale-95 transition-all">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
           </button>
         </div>
 
@@ -161,7 +161,6 @@ export default function App() {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
                     <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative overflow-hidden">
-                      {/* ЛОГОТИПЫ: временно вернул bg-[#CFCFC9] и p-2, чтобы текущие лого не были корявыми */}
                       <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden p-2">
                         <img src={brand.logo} className="w-full h-full object-contain" alt="logo" />
                       </div>
@@ -192,9 +191,10 @@ export default function App() {
                         </div>
                       </div>
                       
+                      {/* КНОПКА SHARE: opacity 40%, увеличен хитбокс, стоп-событие */}
                       <button 
                         onClick={(e) => handleShare(e, brand.name, size)} 
-                        className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-50"
+                        className="p-5 -mr-4 text-[#838383] opacity-40 active:opacity-100 active:scale-110 transition-all shrink-0 relative z-50 pointer-events-auto"
                       >
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
