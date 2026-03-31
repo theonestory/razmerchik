@@ -61,8 +61,6 @@ export default function App() {
   const [[currentIndex, direction], setDirection] = useState([0, 0]); 
   
   const [gender] = useState('male');
-  
-  // СОСТОЯНИЕ ДЛЯ СКРОЛЛА
   const [isScrolled, setIsScrolled] = useState(false);
   
   const [sizes, setSizes] = useState(() => {
@@ -89,16 +87,15 @@ export default function App() {
     if (newIdx === oldIdx) return;
     setDirection([newIdx, newIdx > oldIdx ? 1 : -1]);
     setActiveTab(newTab);
-    setIsScrolled(false); // Разворачиваем рулетку при смене вкладки
+    setIsScrolled(false); 
     window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
   };
 
-  // ОБРАБОТЧИК СКРОЛЛА КАРТОЧЕК
   const handleScroll = (e) => {
     const scrollTop = e.target.scrollTop;
-    if (scrollTop > 20 && !isScrolled) {
+    if (scrollTop > 40 && !isScrolled) {
       setIsScrolled(true);
-    } else if (scrollTop <= 20 && isScrolled) {
+    } else if (scrollTop <= 10 && isScrolled) {
       setIsScrolled(false);
     }
   };
@@ -143,17 +140,25 @@ export default function App() {
           </button>
         </div>
 
-        <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className="flex-1 bg-[#F2F2F7] rounded-t-[32px] pt-8 px-4 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
+        {/* ИЗМЕНЕНИЕ ЗДЕСЬ: убрали класс pt-8 и добавили анимацию paddingTop */}
+        <motion.div 
+          initial={false} 
+          animate={{ paddingTop: isScrolled ? 16 : 32 }} 
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
+          className="flex-1 bg-[#F2F2F7] rounded-t-[32px] px-4 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col"
+        >
           
-          {/* ОБЕРТКА РУЛЕТКИ ДЛЯ СКРЫТИЯ ПРИ СКРОЛЛЕ */}
           <motion.div 
+            initial={false}
             animate={{ 
               height: isScrolled ? 0 : 'auto', 
               opacity: isScrolled ? 0 : 1,
+              scale: isScrolled ? 0.9 : 1,
               marginBottom: isScrolled ? 0 : 18
             }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="relative z-10 shrink-0 overflow-hidden"
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            style={{ originY: 0, originX: 0.5 }} 
+            className="relative z-10 shrink-0 overflow-hidden w-full"
           >
             <p className="text-center text-[13px] font-black text-black/30 mb-0 uppercase tracking-widest leading-none">
               {currentCategory.title}
@@ -163,7 +168,6 @@ export default function App() {
 
           <div className="relative flex-1 overflow-hidden">
             <AnimatePresence initial={false} custom={direction} mode="popLayout">
-              {/* ДОБАВЛЕН onScroll СЮДА */}
               <motion.div 
                 key={activeTab} 
                 custom={direction} 
