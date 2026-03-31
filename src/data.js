@@ -20,14 +20,14 @@ export const shoeDataISO = {
 };
 
 // ==========================================
-// ЛОГОТИПЫ БРЕНДОВ
+// ЛОГОТИПЫ БРЕНДОВ (Сверхнадежные источники)
 // ==========================================
-const LOGO_COLUMBIA = "https://cdn.worldvectorlogo.com/logos/columbia-sportswear.svg";
-const LOGO_HM = "https://cdn.worldvectorlogo.com/logos/h-m.svg";
-const LOGO_LEVIS = "https://cdn.worldvectorlogo.com/logos/levi-s-logo.svg";
-const LOGO_NIKE = "https://cdn.worldvectorlogo.com/logos/nike-11.svg";
-const LOGO_ADIDAS = "https://cdn.worldvectorlogo.com/logos/adidas-4.svg";
-const LOGO_PUMA = "https://cdn.worldvectorlogo.com/logos/puma-logo.svg";
+const LOGO_COLUMBIA = "https://cdn.iconscout.com/icon/free/png-256/free-columbia-2-282464.png";
+const LOGO_HM = "https://cdn.simpleicons.org/h&m";
+const LOGO_LEVIS = "https://cdn.iconscout.com/icon/free/png-256/free-levis-3215433-2673855.png";
+const LOGO_NIKE = "https://cdn.simpleicons.org/nike";
+const LOGO_ADIDAS = "https://cdn.simpleicons.org/adidas";
+const LOGO_PUMA = "https://cdn.simpleicons.org/puma";
 
 // ==========================================
 // БРЕНД 1: COLUMBIA
