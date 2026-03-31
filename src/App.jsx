@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// ИМПОРТИРУЕМ НАШУ БАЗУ ДАННЫХ
 import { sizeDatabase, findNearestShoe, findNearestClothes } from './data';
 
 const RulerPicker = ({ value, onChange, min, max, step }) => {
@@ -27,12 +26,16 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   }, [emblaApi, value, onChange, steps]);
 
   useEffect(() => {
-    if (emblaApi) {
-      emblaApi.on('select', onSelect);
-      const startIdx = steps.indexOf(value);
-      if (startIdx !== -1) emblaApi.scrollTo(startIdx, true);
-    }
-  }, [emblaApi, steps, value, onSelect]);
+    if (!emblaApi) return;
+    emblaApi.on('select', onSelect);
+    return () => emblaApi.off('select', onSelect);
+  }, [emblaApi, onSelect]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const startIdx = steps.indexOf(value);
+    if (startIdx !== -1) emblaApi.scrollTo(startIdx, true);
+  }, [emblaApi]);
 
   return (
     <div className="relative w-full overflow-hidden mask-edges pt-1 pb-[10px]">
@@ -56,11 +59,13 @@ export default function App() {
   const tabs = ['tops', 'bottoms', 'shoes'];
   const [activeTab, setActiveTab] = useState('tops'); 
   const [[currentIndex, direction], setDirection] = useState([0, 0]); 
+  
+  // Жестко фиксируем пол на 'male' без UI, как договаривались
   const [gender] = useState('male');
   
   const [sizes, setSizes] = useState(() => {
     const saved = localStorage.getItem('size_app_values');
-    return saved ? JSON.parse(saved) : { tops: 60, bottoms: 60, shoes: 28.0 };
+    return saved ? JSON.parse(saved) : { tops: 45, bottoms: 35, shoes: 28.0 };
   });
 
   useEffect(() => {
@@ -97,6 +102,7 @@ export default function App() {
     <div className="min-h-screen bg-[#D2D238] w-full flex flex-col relative overflow-hidden">
       <div className="flex-1 flex flex-col pt-4">
         
+        {/* ХЕДЕР С ВКЛАДКАМИ (без тумблера и заголовка) */}
         <div className="px-5 mb-8 flex gap-2 shrink-0">
           <div className="flex-1 bg-black/10 rounded-full flex p-1 h-11 relative overflow-hidden">
             <motion.div 
@@ -146,7 +152,7 @@ export default function App() {
                       </div>
                     );
                   } else {
-                    const size = findNearestClothes(brand.sizes, currentCategory.key, sizes[activeTab]);
+                    const size = findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                     return (
                       <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
                         <div className="w-14 h-14 bg-[#CFCFC9] rounded-full flex items-center justify-center mr-4 shrink-0 overflow-hidden">
