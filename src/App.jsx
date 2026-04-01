@@ -41,7 +41,6 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   );
 };
 
-// Добавлен класс select-text для возможности копирования на этом экране
 const InfoScreen = ({ onClose }) => (
   <motion.div 
     initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} 
@@ -58,17 +57,31 @@ const InfoScreen = ({ onClose }) => (
     </div>
     <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 scrollbar-hide pb-20">
       <section>
-        <h3 className="text-black bg-white border-2 border-black inline-block px-2 py-1 text-sm font-black uppercase mb-3 italic">О приложении</h3>
-        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">«Размерчик» — помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов.</p>
+        <h3 className="text-black bg-white border-2 border-black inline-block px-2 py-1 text-sm font-black uppercase mb-3 italic">🛠️ О приложении</h3>
+        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">
+          Забудьте о «рулетке» с размерами и бесконечных возвратах. Мы создали этот инструмент, чтобы вы точно знали, какой размер брать у мировых брендов, не выходя из примерочной. 👟
+        </p>
       </section>
+
+      <section className="space-y-4">
+        <h3 className="text-black text-sm font-black uppercase border-b-2 border-black/10 pb-1 italic text-xs italic">💎 Почему «Размерчик»?</h3>
+        <ul className="text-black/70 font-bold italic text-sm space-y-2">
+          <li>✅ 30+ мировых брендов в единой базе.</li>
+          <li>✅ Точность на основе ваших реальных замеров (см).</li>
+          <li>✅ Один ввод данных — мгновенный результат по всем маркам.</li>
+        </ul>
+      </section>
+
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1 italic text-xs italic">👕 Грудь</h3>
         <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">Измерьте расстояние от одной подмышки до другой на любимой вещи.</p>
       </section>
+
       <section>
         <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1 italic text-xs italic">👖 Талия</h3>
         <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">Замеряется пояс удобных джинсов от края до края.</p>
       </section>
+
       <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest italic text-black">Размерчик v1.9</div>
     </div>
   </motion.div>
@@ -194,7 +207,7 @@ export default function App() {
                 {currentCategory.brands.map((brand, idx) => {
                   const size = activeTab === 'shoes' ? findNearestShoe(gender, sizes.shoes) : findNearestClothes(brand.sizes[gender], currentCategory.key, sizes[activeTab]);
                   return (
-                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] relative">
+                    <div key={idx} className="bg-white rounded-[100px] p-4 flex items-center shadow-[0_2px_8_rgba(0,0,0,0.03)] relative">
                       <div className="w-14 h-14 mr-4 shrink-0 overflow-hidden flex items-center justify-center">
                         <img src={brand.logo} className="w-full h-full object-contain" alt={brand.name} />
                       </div>
