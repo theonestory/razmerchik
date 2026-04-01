@@ -1,16 +1,41 @@
-# React + Vite
+# 📏 Размерчик — Telegram Mini App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Размерчик** — это удобный помощник для подбора идеального размера одежды и обуви в разных брендах на основе ваших реальных замеров.
 
-Currently, two official plugins are available:
+🚀 **Запустить бота:** [ссылка на твоего бота]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 💡 Идея и Мотивация (Dogfooding)
+Проект родился из личной необходимости. За 10 месяцев я сбросил **55 кг**, что привело к полной смене гардероба. Оказалось, что сетки брендов — это хаос: «L» у одних может быть меньше «M» у других. 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Я устал каждый раз гуглить таблицы соответствия, стоя в примерочной, и решил собрать инструмент «для себя», который за пару тапов говорит, какой размер брать именно мне.
 
-## Expanding the ESLint configuration
+## ✨ Основные фишки
+- **Кросс-брендовый поиск:** Сравнение размеров Nike, Adidas, Zara и еще 30+ брендов в одном окне.
+- **Точность до миллиметра:** Выбор размера на основе длины стельки или обхватов.
+- **Smart Interface:** Защита от случайных нажатий при скролле и адаптивный дизайн под мобильные устройства.
+- **Инфраструктура "Zero Cost":** Весь проект работает на бесплатных лимитах, при этом оставаясь онлайн 24/7.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠 Технологический стек
+Проект реализован в парадигме **Vibe Coding** (скорость + фокус на продукте):
+
+- **Frontend:** React + Tailwind CSS (Hosted on GitHub Pages)
+- **Backend:** Node.js + Telegraf (Hosted on Render.com)
+- **Database:** Static JSON Data (с возможностью расширения до 300+ брендов)
+- **DevOps:** Cron-job.org (для обхода сна на бесплатном тарифе Render)
+- **AI Collaborator:** Gemini (архитектура, отладка, рефакторинг)
+
+## 🏗 Как это устроено (Infrastructure)
+Чтобы проект жил на бесплатном тарифе Render без падений:
+1. Поднят легковесный HTTP-сервер для мониторинга порта.
+2. Реализован цикл автоматического переподключения к Telegram API при конфликтах деплоя.
+3. Настроен внешний «пингер» (Cron-job), который не дает серверу уйти в спящий режим.
+
+## 📈 Планы на будущее
+- [ ] Добавить поддержку 300+ мировых брендов.
+- [ ] Реализовать сохранение профиля пользователя через LocalStorage.
+- [ ] Добавить сканер QR-кодов на бирках для мгновенного поиска.
+
+---
+Разработано с душой и вниманием к деталям. 🐾
