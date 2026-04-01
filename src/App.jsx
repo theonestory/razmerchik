@@ -41,11 +41,12 @@ const RulerPicker = ({ value, onChange, min, max, step }) => {
   );
 };
 
+// Добавлен класс select-text для возможности копирования на этом экране
 const InfoScreen = ({ onClose }) => (
   <motion.div 
     initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} 
     transition={{ type: "spring", damping: 30, stiffness: 250 }}
-    className="absolute inset-0 bg-[#F2F2F7] z-[200] flex flex-col overflow-hidden"
+    className="absolute inset-0 bg-[#F2F2F7] z-[200] flex flex-col overflow-hidden select-text"
   >
     <div className="p-5 flex items-center bg-white border-b border-black/5 shadow-sm shrink-0">
       <button onClick={onClose} className="flex items-center gap-2 active:opacity-50 transition-opacity">
@@ -58,21 +59,17 @@ const InfoScreen = ({ onClose }) => (
     <div className="flex-1 overflow-y-auto px-6 py-8 space-y-10 scrollbar-hide pb-20">
       <section>
         <h3 className="text-black bg-white border-2 border-black inline-block px-2 py-1 text-sm font-black uppercase mb-3 italic">О приложении</h3>
-        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">«Размерчик» — карманный помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов. При выборе параметров отобразится наиболее подходящий размер.</p>
+        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">«Размерчик» — помощник для онлайн-шоппинга. Здесь собраны замеры популярных мировых брендов.</p>
       </section>
       <section>
-        <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1 italic text-xs italic">👕 Как измерить грудь</h3>
-        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">Возьмите вещь, которая сидит идеально. Измерьте расстояние от одной подмышки до другой. Это и есть «полуобхват груди».</p>
+        <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1 italic text-xs italic">👕 Грудь</h3>
+        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">Измерьте расстояние от одной подмышки до другой на любимой вещи.</p>
       </section>
       <section>
-        <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1 italic text-xs italic">👖 Как измерить талию</h3>
-        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">Замеряется пояс удобных джинсов от края до края. Вещь должна лежать ровно.</p>
+        <h3 className="text-black text-sm font-black uppercase mb-3 border-b-2 border-black/10 pb-1 italic text-xs italic">👖 Талия</h3>
+        <p className="text-black/70 leading-relaxed font-bold italic text-sm italic">Замеряется пояс удобных джинсов от края до края.</p>
       </section>
-      <section className="bg-black/5 p-4 rounded-2xl border-l-4 border-black italic">
-        <h3 className="text-black text-xs font-black uppercase mb-2 italic">⚠️ Важное</h3>
-        <p className="text-black/60 text-xs leading-relaxed font-bold italic italic">Китайские подделки и реплики часто маломерят на 1-2 размера. Разные линейки брендов могут иметь свои допуски.</p>
-      </section>
-      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest italic text-black">Размерчик v1.5</div>
+      <div className="pt-10 pb-10 text-center opacity-20 font-black text-xs uppercase tracking-widest italic text-black">Размерчик v1.9</div>
     </div>
   </motion.div>
 );
@@ -84,7 +81,7 @@ export default function App() {
   const [gender, setGender] = useState('male'); 
   const [isScrolled, setIsScrolled] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [showMenu, setShowMenu] = useState(false); // Состояние меню
+  const [showMenu, setShowMenu] = useState(false); 
   const menuRef = useRef(null);
   
   const [sizes, setSizes] = useState(() => {
@@ -119,10 +116,9 @@ export default function App() {
 
   const handleShare = (brandName, sizeData) => {
     const currentValue = sizes[activeTab];
-    let mText = activeTab === 'tops' ? `полуобхвата груди (${currentValue} см)` : activeTab === 'bottoms' ? `полуобхвата талии (${currentValue} см)` : `стельки (${currentValue} см)`;
-    let emoji = activeTab === 'tops' ? "👕" : activeTab === 'bottoms' ? "👖" : "👟";
-    let sText = activeTab === 'shoes' ? `EU: ${sizeData.eu}, US: ${sizeData.us}, UK: ${sizeData.uk}` : `Международный: ${sizeData.int}, US: ${sizeData.us}, EU: ${sizeData.eu}`;
-    const message = `⚡️⚡️⚡️ Размерчик подсказал\nПривет, вот замеры ${mText} для ${brandName}\n${emoji} ${sText}\n\nhttps://t.me/i_know_my_size_bot`;
+    let mText = activeTab === 'tops' ? `груди (${currentValue} см)` : activeTab === 'bottoms' ? `талии (${currentValue} см)` : `стельки (${currentValue} см)`;
+    let sText = activeTab === 'shoes' ? `EU: ${sizeData.eu}, US: ${sizeData.us}` : `Int: ${sizeData.int}, US: ${sizeData.us}, EU: ${sizeData.eu}`;
+    const message = `⚡️ Размерчик подсказал замеры ${mText} для ${brandName}: ${sText}\n\nhttps://t.me/i_know_my_size_bot`;
     const shareUrl = `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
     if (window.Telegram?.WebApp) { window.Telegram.WebApp.openTelegramLink(shareUrl); } else { window.open(shareUrl, '_blank'); }
   };
@@ -146,20 +142,17 @@ export default function App() {
             ))}
           </div>
           
-          {/* КНОПКА МЕНЮ */}
           <div className="relative" ref={menuRef}>
             <button 
               onClick={() => { setShowMenu(!showMenu); window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light'); }} 
               className={`w-11 h-11 rounded-full flex items-center justify-center border border-black/5 active:scale-95 transition-all ${showMenu ? 'bg-black text-[#D2D238]' : 'bg-black/10 text-black'}`}
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
               </svg>
             </button>
 
-            {/* ВЫПАДАЮЩЕЕ МЕНЮ (TG STYLE) */}
             <AnimatePresence>
               {showMenu && (
                 <motion.div 
@@ -219,7 +212,7 @@ export default function App() {
                           <div className="text-[11px] font-bold text-black/20 uppercase mt-1 italic">{activeTab === 'shoes' ? 'Uk' : 'Eu'}</div>
                         </div>
                       </div>
-                      <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleShare(brand.name, size); }} className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-[99]" style={{ touchAction: 'manipulation', cursor: 'pointer' }}>
+                      <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleShare(brand.name, size); }} className="p-4 -mr-2 text-[#838383] opacity-40 active:opacity-100 transition-all shrink-0 relative z-[99]">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
                       </button>
                     </div>

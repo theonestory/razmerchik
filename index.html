@@ -15,6 +15,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Размерчик</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+      /* Глобальный запрет выделения текста для всех платформ */
+      * {
+        -webkit-user-select: none; /* Safari/iOS */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* IE/Edge */
+        user-select: none;         /* Chrome/Opera/Standard */
+        -webkit-tap-highlight-color: transparent; /* Убирает синий хайлайт при тапе на мобильных */
+      }
+
+      /* Исключение для элементов, где текст ДОЛЖЕН выделяться (экран Инфо) */
+      .select-text, .select-text * {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+      }
+      
+      /* Оставляем возможность выделения в инпутах, если они появятся */
+      input, textarea {
+        -webkit-user-select: text;
+        user-select: text;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
