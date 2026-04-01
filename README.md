@@ -22,7 +22,7 @@
 
 - **Frontend:** React + Tailwind CSS (Hosted on GitHub Pages)
 - **Backend:** Node.js + Telegraf (Hosted on Render.com)
-- **Database:** Static JSON Data (с возможностью расширения до 300+ брендов)
+- **Database:** Static JSON Data (с возможностью расширения)
 - **DevOps:** Cron-job.org (для обхода сна на бесплатном тарифе Render)
 - **AI Collaborator:** Gemini (архитектура, отладка, рефакторинг)
 
